@@ -141,6 +141,8 @@ body {
   gap: 6px;
 }
 .sidebar-sub-item:hover { background: rgba(255,255,255,0.04); }
+.sidebar-sub-item.active { background: rgba(212,135,92,0.2); color: #D4875C; }
+.sidebar-sub-item.active .dot { background: #D4875C; }
 .sidebar-sub-item .dot {
   width: 4px;
   height: 4px;
@@ -208,8 +210,10 @@ body {
   transform: translateX(0);
 }
 .page#page-detail {
-  padding-bottom: 140px;
+  padding-bottom: 160px;
 }
+
+
 
 /* ========== COMMON ========== */
 .safe-top { padding-top: 59px; }
@@ -973,6 +977,75 @@ input[type="range"].range-input::-webkit-slider-thumb {
   font-size: 12px;
   color: var(--text-tertiary);
 }
+
+.battery-status-card {
+  background: linear-gradient(180deg, rgba(117, 201, 128, 0.12), rgba(255, 255, 255, 0.92));
+  border: 0.5px solid rgba(117, 201, 128, 0.25);
+  border-radius: var(--radius-lg);
+  margin: 16px 20px 0;
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.battery-status-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.battery-status-label {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+.battery-status-percent {
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -1px;
+}
+.battery-status-subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.battery-status-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.battery-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
+}
+.battery-status-badge.active {
+  background: rgba(117, 201, 128, 0.18);
+  color: var(--accent-sage);
+}
+.battery-mode-disabled {
+  opacity: 0.45;
+}
+.battery-mode-disabled .settings-item-content,
+.battery-mode-disabled .settings-item-check {
+  pointer-events: none;
+}
+.battery-management-note {
+  margin: 12px 20px 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+.battery-warm-icon { background: var(--accent-warm-light); }
+.battery-mode-check { display: none; }
+.battery-mode-selected { background: var(--bg-secondary); }
 
 .capture-thumb {
   position: absolute;
@@ -1905,39 +1978,39 @@ input[type="range"].range-input::-webkit-slider-thumb {
 .event-time { font-size: 11px; color: var(--text-tertiary); }
 
 
-.floating-detail-actions {
+.detail-bottom-nav {
   position: fixed;
   left: 50%;
-  bottom: 22px;
+  bottom: 12px;
   transform: translateX(-50%);
-  width: calc(100% - 32px);
+  width: calc(100% - 56px);
   display: flex;
-  gap: 10px;
+  gap: 8px;
   z-index: 60;
   pointer-events: auto;
 }
 
-.floating-detail-action {
+.detail-bottom-nav-item {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 14px 12px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(18px);
-  border: 1px solid rgba(255,255,255,0.72);
-  box-shadow: 0 12px 30px rgba(44,38,31,0.12);
+  gap: 6px;
+  padding: 11px 10px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(22px);
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 10px 22px rgba(44,38,31,0.1);
   cursor: pointer;
 }
-.floating-detail-action svg {
-  width: 18px;
-  height: 18px;
+.detail-bottom-nav-item svg {
+  width: 17px;
+  height: 17px;
   color: var(--text-secondary);
 }
-.floating-detail-action span {
-  font-size: 14px;
+.detail-bottom-nav-item span {
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -3372,28 +3445,43 @@ input[type="range"].range-input::-webkit-slider-thumb {
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-title">首页</div>
+      <div class="sidebar-section-title">主页</div>
       <div class="sidebar-item active" onclick="go('home', this)">设备列表</div>
+      <div class="sidebar-sub-item" onclick="go('detail', this)"><span class="dot"></span><span>直播页</span></div>
+      <div class="sidebar-sub-item" onclick="go('playback', this)"><span class="dot"></span><span>录像回放</span></div>
+      <div class="sidebar-sub-item" onclick="go('album', this)"><span class="dot"></span><span>相册</span></div>
     </div>
 
     <div class="sidebar-section">
-      <div class="sidebar-section-title">核心页面</div>
-      <div class="sidebar-item" onclick="go('detail', this)">设备详情页</div>
-      <div class="sidebar-item" onclick="go('playback', this)">录像回放</div>
-      <div class="sidebar-item" onclick="go('album', this)">相册</div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-title">设置</div>
+      <div class="sidebar-section-title">设置主页</div>
       <div class="sidebar-item" onclick="go('settings', this)">设置主页</div>
-      <div class="sidebar-item" onclick="go('device-info', this)">设备信息</div>
-      <div class="sidebar-item" onclick="go('ai-guard', this)">AI 告警设置</div>
-      <div class="sidebar-item" onclick="go('storage-settings', this)">存储设置</div>
-      <div class="sidebar-item" onclick="go('display-settings', this)">画面设置</div>
-      <div class="sidebar-item" onclick="go('human-tracking', this)">人形追踪</div>
-      <div class="sidebar-item" onclick="go('pip-settings', this)">画中画播放</div>
-      <div class="sidebar-item" onclick="go('camera-volume', this)">摄像机音量</div>
-      <div class="sidebar-item" onclick="go('time-format', this)">时间制式</div>
+      <div class="sidebar-sub-item" onclick="go('device-info', this)"><span class="dot"></span><span>设备信息</span></div>
+      <div class="sidebar-sub-item" onclick="go('ai-guard', this)"><span class="dot"></span><span>智能看护</span></div>
+      <div class="sidebar-sub-item" onclick="go('feature-settings', this)"><span class="dot"></span><span>功能设置</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">智能看护</div>
+      <div class="sidebar-sub-item" onclick="go('motion-settings', this)"><span class="dot"></span><span>移动侦测</span></div>
+      <div class="sidebar-sub-item" onclick="go('cry-settings', this)"><span class="dot"></span><span>哭声检测</span></div>
+      <div class="sidebar-sub-item" onclick="go('sound-settings', this)"><span class="dot"></span><span>环境声音检测</span></div>
+      <div class="sidebar-sub-item" onclick="go('zone-settings', this)"><span class="dot"></span><span>安全区域</span></div>
+      <div class="sidebar-sub-item" onclick="go('presence-settings', this)"><span class="dot"></span><span>宝宝在位检测</span></div>
+      <div class="sidebar-sub-item" onclick="go('temperature-humidity-settings', this)"><span class="dot"></span><span>温湿度报警</span></div>
+      <div class="sidebar-sub-item" onclick="go('device-notification-settings', this)"><span class="dot"></span><span>通知管理</span></div>
+      <div class="sidebar-sub-item" onclick="go('dnd-settings', this)"><span class="dot"></span><span>免打扰时段</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">功能设置</div>
+      <div class="sidebar-sub-item" onclick="go('display-settings', this)"><span class="dot"></span><span>画面设置</span></div>
+      <div class="sidebar-sub-item" onclick="go('storage-settings', this)"><span class="dot"></span><span>存储设置</span></div>
+      <div class="sidebar-sub-item" onclick="go('power-save-settings', this)"><span class="dot"></span><span>电池管理</span></div>
+      <div class="sidebar-sub-item" onclick="go('human-tracking', this)"><span class="dot"></span><span>人形追踪</span></div>
+      <div class="sidebar-sub-item" onclick="go('pip-settings', this)"><span class="dot"></span><span>画中画播放</span></div>
+      <div class="sidebar-sub-item" onclick="go('camera-volume', this)"><span class="dot"></span><span>摄像机音量</span></div>
+      <div class="sidebar-sub-item" onclick="go('time-format', this)"><span class="dot"></span><span>时间制式</span></div>
+      <div class="sidebar-sub-item" onclick="go('cloud-storage', this)"><span class="dot"></span><span>云存储</span></div>
     </div>
 
     <div class="sidebar-section">
@@ -3864,16 +3952,16 @@ input[type="range"].range-input::-webkit-slider-thumb {
           <div class="events-view-all" onclick="switchPage('playback')">查看全部</div>
         </div>
         <div id="eventList">
-          <div class="event-card"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">12s</div></div><div class="event-content"><div class="event-type">哭声检测</div><div class="event-desc">检测到宝宝哭声，持续约 12 秒</div><div class="event-meta"><div class="event-time">21:32</div></div></div></div>
-          <div class="event-card"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动物体</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
-          <div class="event-card"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过 65 dB 阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
+          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">12s</div></div><div class="event-content"><div class="event-type">哭声检测</div><div class="event-desc">检测到宝宝哭声，持续约 12 秒</div><div class="event-meta"><div class="event-time">21:32</div></div></div></div>
+          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动物体</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
+          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过 65 dB 阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
         </div>
       </div>
 
-      <div class="floating-detail-actions">
-        <div class="floating-detail-action" onclick="switchPage('playback')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>回放</span></div>
-        <div class="floating-detail-action" onclick="switchPage('album')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg><span>相册</span></div>
-        <div class="floating-detail-action" onclick="switchPage('ai-guard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span>智能看护</span></div>
+      <div class="detail-bottom-nav">
+        <div class="detail-bottom-nav-item" onclick="switchPage('playback')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>回放</span></div>
+        <div class="detail-bottom-nav-item" onclick="switchPage('album')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg><span>相册</span></div>
+        <div class="detail-bottom-nav-item" onclick="switchPage('ai-guard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span>智能看护</span></div>
       </div>
     </div>
 
@@ -4112,7 +4200,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="settings-group">
         <div class="settings-list">
           <div class="settings-item" onclick="switchPage('cloud-storage')">
-            <div class="settings-item-content"><div class="settings-item-label">云存储</div><div class="settings-item-desc">由涂鸦提供页面与服务</div></div>
+            <div class="settings-item-content"><div class="settings-item-label">云存储</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
           <div class="settings-item" onclick="showToast('正在检查固件更新')">
@@ -4120,7 +4208,12 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
           <div class="settings-item" onclick="showToast('共享设备功能')">
-            <div class="settings-item-content"><div class="settings-item-label">共享设备</div><div class="settings-item-desc">分享给其他家庭成员查看与管理</div></div>
+            <div class="settings-item-content"><div class="settings-item-label">共享设备</div></div>
+            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="settings-item" onclick="switchPage('time-format')">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">时间制式</div><div class="settings-item-desc">24 小时制</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
@@ -4128,9 +4221,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
 
       <div class="settings-group settings-group-spaced">
         <div class="settings-list">
-          <div class="settings-item" onclick="showRebootDeviceModal()">
-            <div class="settings-item-content"><div class="settings-item-label">重启设备</div><div class="settings-item-desc">设备将短暂离线，约 30 秒后恢复</div></div>
-          </div>
           <div class="settings-item" onclick="showDeleteDeviceModal()">
             <div class="settings-item-content"><div class="settings-item-label" style="color:var(--risk-high)">删除设备</div><div class="settings-item-desc">从当前账号移除此设备</div></div>
           </div>
@@ -4148,9 +4238,9 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
       <div class="info-card">
         <div class="info-row"><div class="info-label">设备名称</div><div class="info-value" style="cursor:pointer" onclick="showDeviceNameModal()">小橘的婴儿床</div></div>
-        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('SN202604100001')"><div><div class="copy-label">SN</div><div class="copy-hint">长按复制</div></div><div class="copy-value">SN202604100001</div></div>
-        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('AA:BB:CC:DD:EE:FF')"><div><div class="copy-label">MAC 地址</div><div class="copy-hint">长按复制</div></div><div class="copy-value">AA:BB:CC:DD:EE:FF</div></div>
-        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('192.168.1.100')"><div><div class="copy-label">IP 地址</div><div class="copy-hint">长按复制</div></div><div class="copy-value">192.168.1.100</div></div>
+        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('SN202604100001')"><div><div class="copy-label">SN</div></div><div class="copy-value">SN202604100001</div></div>
+        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('AA:BB:CC:DD:EE:FF')"><div><div class="copy-label">MAC 地址</div></div><div class="copy-value">AA:BB:CC:DD:EE:FF</div></div>
+        <div class="copy-row" oncontextmenu="event.preventDefault();copyToClipboard('192.168.1.100')"><div><div class="copy-label">IP 地址</div></div><div class="copy-value">192.168.1.100</div></div>
         <div class="info-row"><div class="info-label">WiFi 名称</div><div class="info-value">HomeWiFi_5G</div></div>
         <div class="info-row"><div class="info-label">固件版本</div><div class="info-value">V2.1.0</div></div>
       </div>
@@ -4216,6 +4306,11 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="settings-group">
         <div class="settings-group-title">通知管理</div>
         <div class="settings-list">
+          <div class="settings-item" onclick="switchPage('device-notification-settings')">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">通知管理</div><div class="settings-item-desc">检测通知与设备提醒</div></div>
+            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
           <div class="settings-item" onclick="switchPage('dnd-settings')">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">免打扰时段</div><div class="settings-item-desc" id="dndStatusDesc">关</div></div>
@@ -4261,15 +4356,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
         </div>
 
-        <div class="notification-section">
-          <div class="settings-group-title">通知</div>
-          <div class="settings-list">
-            <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-              <div class="settings-item-content"><div class="settings-item-label">推送通知</div><div class="settings-item-desc">检测到移动时发送通知</div></div>
-              <div class="toggle-switch on"></div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -4379,15 +4465,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
 
       <!-- Notification -->
-      <div class="notification-section">
-        <div class="settings-group-title">通知</div>
-        <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">推送通知</div><div class="settings-item-desc">检测到哭声时发送通知</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-        </div>
-      </div>
     </div>
     </div>
 
@@ -4419,15 +4496,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
         </div>
       </div>
 
-      <div class="notification-section">
-        <div class="settings-group-title">通知</div>
-        <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">推送通知</div><div class="settings-item-desc">环境音量超标时发送通知</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-        </div>
-      </div>
       </div>
     </div>
 
@@ -4495,15 +4563,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
         </button>
       </div>
 
-      <div class="notification-section">
-        <div class="settings-group-title">通知</div>
-        <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">推送通知</div><div class="settings-item-desc">围栏或禁区触发时发送通知</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-        </div>
-      </div>
     </div>
     </div>
 
@@ -4622,25 +4681,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
         </div>
       </div>
-
-      <div class="dnd-info">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <div>免打扰期间告警仍会记录在消息中心</div>
-      </div>
-
-      <div class="settings-group" style="margin-top:20px">
-        <div class="settings-group-title">设备通知</div>
-        <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">设备离线提醒</div><div class="settings-item-desc">设备断开连接时提醒</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">低电量提醒</div><div class="settings-item-desc">电量低于 20% 时提醒</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- ==================== PAGE: FEATURE SETTINGS ==================== -->
@@ -4678,6 +4718,11 @@ input[type="range"].range-input::-webkit-slider-thumb {
             </div>
             <div class="range-row"><span style="font-size:16px">🔈</span><input type="range" class="range-input" min="0" max="100" step="10" value="50" aria-label="摄像机音量" oninput="document.getElementById('cameraVolumeInlineValue').textContent=this.value+'%'"><span style="font-size:16px">🔊</span></div>
           </div>
+          <div class="settings-item" onclick="switchPage('time-format')">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">时间制式</div><div class="settings-item-desc">24 小时制</div></div>
+            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
           <div class="settings-item" onclick="showPTZCalibrationModal()">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">云台校准</div><div class="settings-item-desc">摄像机旋转一周并回到初始位置</div></div>
@@ -4693,11 +4738,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item-content"><div class="settings-item-label">存储设置</div><div class="settings-item-desc">SD 卡状态与录制模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="switchPage('time-format')">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">时间制式</div><div class="settings-item-desc">24 小时制</div></div>
-            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
         </div>
       </div>
 
@@ -4705,8 +4745,8 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div class="settings-group-title">电源</div>
         <div class="settings-list">
           <div class="settings-item" onclick="switchPage('power-save-settings')">
-            <div class="settings-item-icon" style="background:var(--accent-warm-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-warm)" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">省电模式</div><div class="settings-item-desc">低电量自动省电</div></div>
+            <div class="settings-item-icon battery-warm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-warm)" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">电池管理</div><div class="settings-item-desc">查看电量并管理省电模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
@@ -4855,15 +4895,59 @@ input[type="range"].range-input::-webkit-slider-thumb {
     </div>
 
     <!-- ==================== PAGE: DEVICE NOTIFICATION SETTINGS ==================== -->
-    <!-- page-device-notification-settings removed: notifications now inline in each detection sub-page -->
     <div class="page" id="page-device-notification-settings">
       <div class="safe-top"></div>
       <div class="sub-header">
         <div class="sub-back" onclick="switchPage('ai-guard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
-        <div class="sub-title">通知设置</div><div></div>
+        <div class="sub-title">通知管理</div><div></div>
       </div>
-      <div class="detection-card">
-        <div class="detection-card-desc">通知开关已移至各检测项的设置页面中，可在对应检测页底部找到。设备离线和低电量通知请前往「免打扰时段」页面设置。</div>
+
+      <div class="notification-section">
+        <div class="settings-group-title">检测通知</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">移动侦测通知</div><div class="settings-item-desc">检测到移动时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">哭声检测通知</div><div class="settings-item-desc">检测到哭声时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">环境声音通知</div><div class="settings-item-desc">环境音量超标时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">安全区域通知</div><div class="settings-item-desc">围栏或禁区触发时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">宝宝在位通知</div><div class="settings-item-desc">宝宝离开画面时发送通知</div></div>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">温度告警通知</div><div class="settings-item-desc">温度超出范围时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">湿度告警通知</div><div class="settings-item-desc">湿度超出范围时发送通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notification-section">
+        <div class="settings-group-title">设备通知</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">设备离线提醒</div><div class="settings-item-desc">设备断开连接时提醒</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-content"><div class="settings-item-label">低电量提醒</div><div class="settings-item-desc">电量低于 20% 时提醒</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -4882,23 +4966,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div class="detection-card-desc">宝宝离开画面时自动告警</div>
       </div>
       <div class="ai-detail-body" id="presenceSettingsBody">
-        <div class="settings-group">
-          <div class="settings-list">
-            <div class="settings-item">
-              <div class="settings-item-content"><div class="settings-item-label">适用场景</div><div class="settings-item-desc">宝宝独自在床或围栏内时使用</div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="notification-section">
-          <div class="settings-group-title">通知</div>
-          <div class="settings-list">
-            <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-              <div class="settings-item-content"><div class="settings-item-label">推送通知</div><div class="settings-item-desc">宝宝离开画面时发送通知</div></div>
-              <div class="toggle-switch"></div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -4967,19 +5034,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
         </div>
       </div>
 
-      <div class="notification-section">
-        <div class="settings-group-title">通知</div>
-        <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">温度告警通知</div><div class="settings-item-desc">温度超出范围时发送通知</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">湿度告警通知</div><div class="settings-item-desc">湿度超出范围时发送通知</div></div>
-            <div class="toggle-switch on"></div>
-          </div>
-        </div>
-      </div>
       </div>
     </div>
 
@@ -4987,25 +5041,49 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="safe-top"></div>
       <div class="sub-header">
         <div class="sub-back" onclick="switchPage('feature-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
-        <div class="sub-title">省电模式</div><div></div>
+        <div class="sub-title">电池管理</div><div></div>
       </div>
-      <div class="detection-card">
-        <div class="detection-card-header">
-          <div class="detection-card-title">省电模式开关</div>
-          <div class="toggle-switch on" onclick="toggleSwitch(this)"></div>
+      <div class="battery-status-card">
+        <div class="battery-status-top">
+          <div>
+            <div class="battery-status-label">当前电量</div>
+            <div class="battery-status-percent" id="batteryPercentValue">86%</div>
+            <div class="battery-status-subtitle" id="batteryStatusText">正在充电 · 接通电源后将恢复正常模式</div>
+          </div>
+          <div class="battery-status-badge active" id="batteryPowerStateBadge">充电中</div>
         </div>
-        <div class="detection-card-desc">设备未插电或低电量时可自动进入省电模式。</div>
+        <div class="battery-status-badges">
+          <div class="battery-status-badge active" id="batteryModeBadge">当前模式：正常</div>
+          <div class="battery-status-badge">仅电池供电时可开启省电模式</div>
+        </div>
       </div>
-      <div class="settings-group">
+      <div class="battery-management-note">只有在电池供电时才能切换到省电模式；接通电源后，设备会立即恢复到正常模式。</div>
+      <div class="settings-group settings-card-stack">
+        <div class="settings-group-title">电池使用模式选择</div>
         <div class="settings-list">
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">未插电时自动开启</div></div>
+          <div class="settings-item" onclick="selectBatteryMode(this, 'normal')">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">正常</div><div class="settings-item-desc">性能最佳，功耗较高</div></div>
+            <div class="settings-item-check battery-mode-check battery-mode-check-normal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="settings-item" id="powerSaveModeItem" onclick="selectBatteryMode(this, 'power')">
+            <div class="settings-item-icon battery-warm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-warm)" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">省电模式</div><div class="settings-item-desc">降低待机耗电，但事件告警会有延迟</div></div>
+            <div class="settings-item-check battery-mode-check battery-mode-check-power"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="settings-group settings-card-stack-tight">
+        <div class="settings-group-title">自动省电模式</div>
+        <div class="settings-list">
+          <div class="settings-item" id="autoBatteryToggleItem" onclick="toggleAutoBatteryMode(this)">
+            <div class="settings-item-content"><div class="settings-item-label">低电量自动进入省电模式</div><div class="settings-item-desc">电量低于阈值时自动切换，插电时也可保持开启</div></div>
             <div class="toggle-switch on"></div>
           </div>
           <div class="power-threshold-card">
             <div class="power-threshold-head">
               <div class="power-threshold-title">低电量自动开启阈值</div>
-              <div class="power-threshold-value" id="powerSaveThresholdValue">50%</div>
+              <div class="power-threshold-value" id="powerSaveThresholdValue">30%</div>
             </div>
             <div class="power-threshold-scale">
               <span>10%</span>
@@ -5014,8 +5092,8 @@ input[type="range"].range-input::-webkit-slider-thumb {
               <span>70%</span>
               <span>90%</span>
             </div>
-            <input type="range" class="range-input power-threshold-slider" min="10" max="90" step="10" value="50" aria-label="省电模式阈值" oninput="updatePowerSaveThreshold(this.value)">
-            <div class="power-threshold-desc" id="powerSaveThresholdDesc">当前电量低于 50% 时自动开启省电模式</div>
+            <input type="range" class="range-input power-threshold-slider" min="10" max="90" step="10" value="30" aria-label="省电模式阈值" oninput="updatePowerSaveThreshold(this.value)">
+            <div class="power-threshold-desc" id="powerSaveThresholdDesc">当前电量低于 30% 时自动开启省电模式</div>
           </div>
         </div>
       </div>
@@ -5747,6 +5825,44 @@ function selectRecModeVertical(el, mode) {
   const check = el.querySelector('.settings-item-check');
   if (check) check.style.display = 'flex';
 }
+
+function selectBatteryMode(el, mode) {
+  const powerItem = document.getElementById('powerSaveModeItem');
+  const isPowerMode = mode === 'power';
+  if (isPowerMode && powerItem && powerItem.classList.contains('battery-mode-disabled')) return;
+  document.querySelectorAll('.battery-mode-check').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('#page-power-save-settings .settings-item').forEach(item => item.classList.remove('battery-mode-selected'));
+  el.classList.add('battery-mode-selected');
+  const check = el.querySelector('.settings-item-check');
+  if (check) check.style.display = 'flex';
+  const modeText = document.getElementById('batteryModeBadge');
+  if (modeText) modeText.textContent = isPowerMode ? '当前模式：省电' : '当前模式：正常';
+}
+
+function toggleAutoBatteryMode(el) {
+  if (el.classList.contains('battery-mode-disabled')) return;
+  toggleSwitch(el.querySelector('.toggle-switch'));
+}
+
+function setBatteryState(isCharging) {
+  const text = document.getElementById('batteryStatusText');
+  const badge = document.getElementById('batteryPowerStateBadge');
+  const powerItem = document.getElementById('powerSaveModeItem');
+  if (text) text.textContent = isCharging ? '正在充电 · 接通电源后将恢复正常模式' : '电池供电中 · 可切换到省电模式';
+  if (badge) {
+    badge.textContent = isCharging ? '充电中' : '电池供电';
+    badge.classList.toggle('active', isCharging);
+  }
+  if (powerItem) powerItem.classList.toggle('battery-mode-disabled', isCharging);
+  if (isCharging) {
+    const normalItem = document.querySelector('#page-power-save-settings .settings-item');
+    if (normalItem) selectBatteryMode(normalItem, 'normal');
+  }
+}
+
+const batteryModeItems = document.querySelectorAll('#page-power-save-settings .settings-item');
+if (batteryModeItems[0]) selectBatteryMode(batteryModeItems[0], 'normal');
+setBatteryState(true);
 // Init: show check for event recording
 function selectCryMusic(el) {
   el.parentElement.querySelectorAll('.cry-music-item').forEach(i => i.classList.remove('selected'));
@@ -5928,7 +6044,7 @@ setTimeout(() => {
 
 // ========== SIDEBAR NAV ==========
 function go(pageName, el) {
-  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item, .sidebar-sub-item').forEach(i => i.classList.remove('active'));
   if (el) el.classList.add('active');
   switchPage(pageName);
 }
@@ -6022,7 +6138,7 @@ function updatePowerSaveThreshold(value) {
   const valueEl = document.getElementById('powerSaveThresholdValue');
   const descEl = document.getElementById('powerSaveThresholdDesc');
   if (valueEl) valueEl.textContent = value + '%';
-  if (descEl) descEl.textContent = `当前电量低于 ${value}% 时自动开启省电模式`;
+  if (descEl) descEl.textContent = `当前电量低于 ${value}% 时自动进入省电模式`;
 }
 
 // ========== CRY SENSITIVITY ==========
