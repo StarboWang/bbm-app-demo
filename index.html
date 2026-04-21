@@ -58,13 +58,14 @@ body {
   display: flex;
   gap: 24px;
   align-items: flex-start;
-  width: min(100%, 1720px);
+  width: 100%;
+  max-width: 1920px;
 }
 .workspace-main {
   display: flex;
   gap: 24px;
   align-items: flex-start;
-  flex: 1;
+  flex-shrink: 0;
   min-width: 0;
 }
 .sidebar {
@@ -185,7 +186,7 @@ body {
 .doc-panel {
   flex: 1;
   min-width: 460px;
-  max-width: min(56vw, 860px);
+  max-width: 860px;
   max-height: 860px;
   background: linear-gradient(180deg, #FCFAF8 0%, #F6F1EB 100%);
   border-radius: 24px;
@@ -195,7 +196,6 @@ body {
   display: flex;
   flex-direction: column;
   flex-shrink: 1;
-  width: 100%;
 }
 .doc-panel-header {
   padding: 20px 24px 16px;
@@ -400,6 +400,25 @@ body {
   }
 }
 
+/* ========== LARGE SCREEN (4K) ========== */
+@media (min-width: 1920px) {
+  body { padding: 32px; }
+  .app-container { gap: 32px; }
+  .workspace-main { gap: 32px; }
+  .sidebar {
+    width: 320px;
+    max-height: 960px;
+  }
+  .phone-frame {
+    width: 441px;
+    height: 954px;
+  }
+  .doc-panel {
+    max-width: 960px;
+    max-height: 954px;
+  }
+}
+
 @media (max-width: 1560px) {
   .app-container {
     width: 100%;
@@ -420,8 +439,6 @@ body {
   }
   .doc-panel {
     min-width: 360px;
-    max-width: none;
-    width: 100%;
   }
 }
 
