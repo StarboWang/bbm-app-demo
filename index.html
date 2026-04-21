@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BBM — 婴儿看护摄像头</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
 /* ========== RESET & BASE ========== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,6 +46,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  gap: 24px;
   min-height: 100vh;
   padding: 20px;
   color: var(--text-primary);
@@ -56,6 +58,14 @@ body {
   display: flex;
   gap: 24px;
   align-items: flex-start;
+  width: min(100%, 1720px);
+}
+.workspace-main {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
 }
 .sidebar {
   width: 280px;
@@ -170,6 +180,260 @@ body {
   overflow: hidden;
   position: relative;
   box-shadow: 0 0 0 2px rgba(255,255,255,0.1), 0 20px 60px rgba(0,0,0,0.4);
+  flex-shrink: 0;
+}
+.doc-panel {
+  flex: 1;
+  min-width: 460px;
+  max-width: min(56vw, 860px);
+  max-height: 860px;
+  background: linear-gradient(180deg, #FCFAF8 0%, #F6F1EB 100%);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.24);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  width: 100%;
+}
+.doc-panel-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(44, 42, 39, 0.08);
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.doc-panel-header-left {
+  flex: 1;
+  min-width: 0;
+}
+.doc-panel-header-left h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+}
+.doc-panel-header-left p {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.doc-source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent-warm);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+.doc-source-link:hover {
+  text-decoration: underline;
+}
+.doc-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(44,42,39,0.18) transparent;
+}
+.doc-panel-body::-webkit-scrollbar { width: 6px; }
+.doc-panel-body::-webkit-scrollbar-thumb {
+  background: rgba(44,42,39,0.12);
+  border-radius: 999px;
+}
+.doc-section-card {
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(44, 42, 39, 0.06);
+  border-radius: 20px;
+  padding: 14px 18px 16px;
+  box-shadow: var(--shadow-sm);
+}
+.doc-section-card + .doc-section-card {
+  margin-top: 14px;
+}
+.doc-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  letter-spacing: -0.1px;
+}
+.doc-breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.doc-breadcrumb-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-warm);
+}
+.doc-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.doc-mermaid-wrapper {
+  margin: 8px 0;
+  padding: 16px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 14px;
+  border: 1px solid rgba(44,42,39,0.06);
+  overflow: hidden;
+}
+.doc-mermaid-wrapper svg {
+  max-width: 100%;
+  height: auto;
+}
+.doc-list-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.doc-list-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+  background: var(--accent-warm-light);
+  color: var(--accent-warm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.doc-list-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.doc-list-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.doc-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  padding-left: 6px;
+}
+.doc-list-sub-item {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.doc-list-sub-marker {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(212,135,92,0.08);
+  color: var(--accent-warm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.doc-list-sub-text {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+.doc-list-sub-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.doc-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.doc-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.doc-placeholder {
+  display: none;
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.68);
+  border: 1px dashed rgba(44, 42, 39, 0.12);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.doc-placeholder.visible { display: block; }
+
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .doc-panel-header {
+    background: rgba(255,255,255,0.94);
+  }
+}
+
+@media (max-width: 1560px) {
+  .app-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1360px) {
+  body {
+    padding: 16px;
+    gap: 16px;
+  }
+  .app-container,
+  .workspace-main {
+    gap: 16px;
+  }
+  .sidebar {
+    width: 248px;
+  }
+  .doc-panel {
+    min-width: 360px;
+    max-width: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: 1180px) {
+  body {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+  .app-container {
+    width: max-content;
+    min-width: 1180px;
+  }
 }
 .dynamic-island {
   position: absolute;
@@ -3491,6 +3755,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
 <body>
 
 <div class="app-container">
+  <div class="workspace-main">
 
   <!-- ========== SIDEBAR ========== -->
   <div class="sidebar" id="sidebar">
@@ -3521,7 +3786,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="sidebar-sub-item" onclick="go('cry-settings', this)"><span class="dot"></span><span>哭声检测</span></div>
       <div class="sidebar-sub-item" onclick="go('sound-settings', this)"><span class="dot"></span><span>环境声音检测</span></div>
       <div class="sidebar-sub-item" onclick="go('zone-settings', this)"><span class="dot"></span><span>安全区域</span></div>
-      <div class="sidebar-sub-item" onclick="go('presence-settings', this)"><span class="dot"></span><span>宝宝在位检测</span></div>
+      <div class="sidebar-sub-item" onclick="go('presence-settings', this)"><span class="dot"></span><span>宝宝跟随</span></div>
       <div class="sidebar-sub-item" onclick="go('temperature-humidity-settings', this)"><span class="dot"></span><span>温湿度报警</span></div>
       <div class="sidebar-sub-item" onclick="go('device-notification-settings', this)"><span class="dot"></span><span>通知管理</span></div>
       <div class="sidebar-sub-item" onclick="go('dnd-settings', this)"><span class="dot"></span><span>免打扰时段</span></div>
@@ -3532,11 +3797,9 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="sidebar-sub-item" onclick="go('display-settings', this)"><span class="dot"></span><span>画面设置</span></div>
       <div class="sidebar-sub-item" onclick="go('storage-settings', this)"><span class="dot"></span><span>存储设置</span></div>
       <div class="sidebar-sub-item" onclick="go('power-save-settings', this)"><span class="dot"></span><span>电池管理</span></div>
-      <div class="sidebar-sub-item" onclick="go('human-tracking', this)"><span class="dot"></span><span>人形追踪</span></div>
       <div class="sidebar-sub-item" onclick="go('pip-settings', this)"><span class="dot"></span><span>画中画播放</span></div>
       <div class="sidebar-sub-item" onclick="go('camera-volume', this)"><span class="dot"></span><span>摄像机音量</span></div>
-      <div class="sidebar-sub-item" onclick="go('time-format', this)"><span class="dot"></span><span>时间制式</span></div>
-      <div class="sidebar-sub-item" onclick="go('cloud-storage', this)"><span class="dot"></span><span>云存储</span></div>
+            <div class="sidebar-sub-item" onclick="go('cloud-storage', this)"><span class="dot"></span><span>云存储</span></div>
     </div>
 
     <div class="sidebar-section">
@@ -3547,7 +3810,6 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="sidebar-action" onclick="toggleDeviceOffline()">切换设备离线/在线</div>
     </div>
   </div>
-</div>
 
 <div class="phone-frame">
   <div class="dynamic-island"></div>
@@ -3854,23 +4116,23 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
         </div>
         <div class="live-video-overlay">
-          <div class="live-timestamp">
+          <div class="live-timestamp" onclick="event.stopPropagation()">
             <div class="live-brand-logo">
               <svg viewBox="0 0 24 24" fill="white" width="14" height="14"><text x="12" y="17" font-size="16" font-weight="700" text-anchor="middle" fill="white">M</text></svg>
             </div>
             <div class="live-rec-dot"></div>
             <span id="detailTime">2026.4.10 22:47:13</span>
           </div>
-          <div class="live-info-pills">
-            <div class="live-info-pill">
+          <div class="live-info-pills" onclick="event.stopPropagation()">
+            <div class="live-info-pill" onclick="event.stopPropagation()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
               25°C
             </div>
-            <div class="live-info-pill">
+            <div class="live-info-pill" onclick="event.stopPropagation()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
               58%
             </div>
-            <div class="live-info-pill">
+            <div class="live-info-pill" onclick="event.stopPropagation()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/><rect x="3" y="8" width="12" height="8" rx="1" fill="currentColor" stroke="none" opacity="0.7"/></svg>
               86%
             </div>
@@ -4028,7 +4290,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div id="eventList">
           <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">12s</div></div><div class="event-content"><div class="event-type">哭声检测</div><div class="event-desc">检测到宝宝哭声，持续约 12 秒</div><div class="event-meta"><div class="event-time">21:32</div></div></div></div>
           <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动物体</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
-          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过 65 dB 阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
+          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
         </div>
       </div>
 
@@ -4098,7 +4360,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
               <div class="timeline-event-marker cry" style="left:15%" title="哭声检测 21:32"></div>
               <div class="timeline-event-marker motion" style="left:42%" title="移动侦测 20:15"></div>
               <div class="timeline-event-marker sound" style="left:62%" title="声音检测 19:47"></div>
-              <div class="timeline-event-marker presence" style="left:25%" title="宝宝在位 18:00"></div>
+              <div class="timeline-event-marker presence" style="left:25%" title="宝宝跟随 18:00"></div>
               <div class="timeline-event-marker fence" style="left:70%" title="围栏告警 17:30"></div>
               <div class="timeline-event-marker temp" style="left:88%" title="温湿度异常 16:00"></div>
               <!-- Scrubber -->
@@ -4151,7 +4413,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div class="event-filter-chip">哭声</div>
         <div class="event-filter-chip">移动侦测</div>
         <div class="event-filter-chip">声音检测</div>
-        <div class="event-filter-chip">宝宝在位</div>
+        <div class="event-filter-chip">宝宝跟随</div>
         <div class="event-filter-chip">围栏/禁区</div>
         <div class="event-filter-chip">温湿度</div>
         <div class="event-filter-chip">遮脸检测</div>
@@ -4165,7 +4427,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div class="playback-event-card" onclick="showToast('已定位到 21:32')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">12s</div></div><div class="event-content"><div class="event-type">哭声检测</div><div class="event-desc">检测到宝宝哭声</div><div class="event-meta"><div class="event-time">21:32</div></div></div></div>
         <div class="playback-event-card" onclick="showToast('已定位到 20:15')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
         <div class="playback-event-card" onclick="showToast('已定位到 19:47')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
-        <div class="playback-event-card" onclick="showToast('已定位到 18:00')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">15s</div></div><div class="event-content"><div class="event-type">宝宝在位</div><div class="event-desc">宝宝离开画面</div><div class="event-meta"><div class="event-time">18:00</div></div></div></div>
+        <div class="playback-event-card" onclick="showToast('已定位到 18:00')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">15s</div></div><div class="event-content"><div class="event-type">宝宝跟随</div><div class="event-desc">宝宝离开画面</div><div class="event-meta"><div class="event-time">18:00</div></div></div></div>
         <div class="playback-event-card" onclick="showToast('已定位到 17:30')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">6s</div></div><div class="event-content"><div class="event-type">围栏告警</div><div class="event-desc">宝宝走出围栏范围</div><div class="event-meta"><div class="event-time">17:30</div></div></div></div>
       </div>
     </div>
@@ -4285,9 +4547,8 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item-content"><div class="settings-item-label">共享设备</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="switchPage('time-format')">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">时间制式</div><div class="settings-item-desc">24 小时制</div></div>
+          <div class="settings-item" onclick="showRebootDeviceModal()">
+            <div class="settings-item-content"><div class="settings-item-label">重启设备</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
@@ -4354,7 +4615,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
           <div class="settings-item" onclick="switchPage('presence-settings')">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><path d="M12 8v4m-4 0h8"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">宝宝在位检测</div><div class="settings-item-desc" id="presenceStatusDesc">关</div></div>
+            <div class="settings-item-content"><div class="settings-item-label">宝宝跟随</div><div class="settings-item-desc" id="presenceStatusDesc">关</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
           <div class="settings-item" onclick="switchPage('zone-settings')">
@@ -4375,7 +4636,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
           <div class="settings-item" onclick="switchPage('sound-settings')">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">环境声音检测</div><div class="settings-item-desc" id="soundStatusDesc">开 · ≥65dB</div></div>
+            <div class="settings-item-content"><div class="settings-item-label">环境声音检测</div><div class="settings-item-desc" id="soundStatusDesc">开 · 中灵敏度</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
         </div>
@@ -4441,6 +4702,17 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item" onclick="selectMotionSensitivity(this, '低')">
               <div class="settings-item-content"><div class="settings-item-label">低</div><div class="settings-item-desc">较大移动才触发，减少误报</div></div>
               <div class="settings-item-check motion-check-low"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-group-title">通知推送</div>
+          <div class="settings-list">
+            <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+              <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+              <div class="settings-item-content"><div class="settings-item-label">移动侦测通知</div><div class="settings-item-desc">触发时推送系统通知</div></div>
+              <div class="toggle-switch on"></div>
             </div>
           </div>
         </div>
@@ -4554,7 +4826,18 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
 
       <!-- Notification -->
-    </div>
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">哭声检测通知</div><div class="settings-item-desc">触发时推送系统通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
+      </div>
+
+      </div>
     </div>
 
     <!-- ==================== PAGE: SOUND SETTINGS ==================== -->
@@ -4577,18 +4860,29 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="ai-detail-body visible" id="soundSettingsBody">
       <div class="settings-group">
         <div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px">
-          <div class="settings-item-content"><div class="settings-item-label">灵敏度</div><div class="settings-item-desc" id="soundSensitivityDesc">当前：中 (≥65dB)</div></div>
+          <div class="settings-item-content"><div class="settings-item-label">灵敏度</div><div class="settings-item-desc" id="soundSensitivityDesc">当前：中灵敏度</div></div>
           <div class="sensitivity-slider">
             <input type="range" min="1" max="3" value="2" id="soundSensitivity" oninput="updateSoundSensitivity()">
-            <div class="slider-labels"><span>低 (≥80dB)</span><span>中 (≥65dB)</span><span>高 (≥50dB)</span></div>
+            <div class="slider-labels"><span>低</span><span>中</span><span>高</span></div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">环境声音通知</div><div class="settings-item-desc">触发时推送系统通知</div></div>
+            <div class="toggle-switch on"></div>
           </div>
         </div>
       </div>
 
       </div>
     </div>
-
-    <!-- ==================== PAGE: ZONE SETTINGS ==================== -->
     <div class="page" id="page-zone-settings">
       <div class="safe-top"></div>
       <div class="sub-header">
@@ -4600,7 +4894,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="detection-card">
         <div class="detection-card-header">
           <div class="detection-card-title">安全区域</div>
-          <div class="toggle-switch on" onclick="toggleAIDetection(this, 'zoneStatusDesc', 'zoneSettingsBody')"></div>
+          <div class="toggle-switch on" onclick="toggleZoneWithMutex(this, 'zoneStatusDesc', 'zoneSettingsBody')"></div>
         </div>
         <div class="detection-card-desc">宝宝进出指定区域时自动告警</div>
       </div>
@@ -4643,6 +4937,16 @@ input[type="range"].range-input::-webkit-slider-thumb {
           <div class="settings-item-content"><div class="settings-item-label">画面中显示区域</div><div class="settings-item-desc">在实时画面中叠加显示围栏和禁区边界</div></div>
           <div class="toggle-switch on"></div>
         </div>
+        <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+          <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <div class="settings-item-content"><div class="settings-item-label">闯入声音提醒</div><div class="settings-item-desc">宝宝闯入禁区时播放录制声音</div></div>
+          <div class="toggle-switch"></div>
+        </div>
+        <div class="settings-item" onclick="showToast('开始录制闯入提醒声音…')">
+          <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+          <div class="settings-item-content"><div class="settings-item-label">录制闯入声音</div><div class="settings-item-desc">录制一段声音，宝宝闯入禁区时在设备端播放</div></div>
+          <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
       </div>
 
       <div style="margin:16px 20px 0;display:flex;gap:10px">
@@ -4650,6 +4954,17 @@ input[type="range"].range-input::-webkit-slider-thumb {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           删除选中区域
         </button>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">安全区域通知</div><div class="settings-item-desc">围栏/禁区触发时推送系统通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -4692,6 +5007,17 @@ input[type="range"].range-input::-webkit-slider-thumb {
           </div>
         </div>
       </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">温度告警通知</div><div class="settings-item-desc">超出范围时推送系统通知</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ==================== PAGE: HUMIDITY SETTINGS ==================== -->
@@ -4728,6 +5054,17 @@ input[type="range"].range-input::-webkit-slider-thumb {
           <div class="current-value-display">
             <span class="current-value-number">52%</span>
             <span class="current-value-status" style="color:var(--accent-sage)">正常</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">湿度告警通知</div><div class="settings-item-desc">超出范围时推送系统通知</div></div>
+            <div class="toggle-switch on"></div>
           </div>
         </div>
       </div>
@@ -4789,30 +5126,17 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item-content"><div class="settings-item-label">画面设置</div><div class="settings-item-desc">翻转、夜视模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><path d="M12 8v8m-4 0h8"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">人形追踪</div><div class="settings-item-desc">自动跟踪画面中的宝宝</div></div>
-            <div class="toggle-switch"></div>
-          </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+          <div class="settings-item" onclick="switchPage('pip-settings')">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="11" y="9" width="10" height="7" rx="1"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">画中画播放</div><div class="settings-item-desc">退出 App 后继续播放</div></div>
-            <div class="toggle-switch"></div>
-          </div>
-          <div class="settings-item" style="flex-direction:column;align-items:stretch;gap:12px;cursor:default">
-            <div style="display:flex;align-items:center;width:100%">
-              <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
-              <div class="settings-item-content"><div class="settings-item-label">摄像机音量</div><div class="settings-item-desc">设备端扬声器音量</div></div>
-              <div class="settings-item-value" id="cameraVolumeInlineValue">50%</div>
-            </div>
-            <div class="range-row"><span style="font-size:16px">🔈</span><input type="range" class="range-input" min="0" max="100" step="10" value="50" aria-label="摄像机音量" oninput="document.getElementById('cameraVolumeInlineValue').textContent=this.value+'%'"><span style="font-size:16px">🔊</span></div>
-          </div>
-          <div class="settings-item" onclick="switchPage('time-format')">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">时间制式</div><div class="settings-item-desc">24 小时制</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="showPTZCalibrationModal()">
+          <div class="settings-item" onclick="switchPage('camera-volume')">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">摄像机音量</div><div class="settings-item-desc">设备端扬声器音量</div></div>
+            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+                    <div class="settings-item" onclick="showPTZCalibrationModal()">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">云台校准</div><div class="settings-item-desc">摄像机旋转一周并回到初始位置</div></div>
           </div>
@@ -4937,27 +5261,11 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
     </div>
 
-    <!-- ==================== PAGE: HUMAN TRACKING ==================== -->
-    <div class="page" id="page-human-tracking">
-      <div class="safe-top"></div>
-      <div class="sub-header">
-        <div class="sub-back" onclick="switchPage('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
-        <div class="sub-title">人形追踪</div><div></div>
-      </div>
-      <div class="detection-card">
-        <div class="detection-card-header">
-          <div class="detection-card-title">人形追踪</div>
-          <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
-        </div>
-        <div class="detection-card-desc">开启后摄像头自动追踪画面中的宝宝移动</div>
-      </div>
-    </div>
-
     <!-- ==================== PAGE: PiP SETTINGS ==================== -->
     <div class="page" id="page-pip-settings">
       <div class="safe-top"></div>
       <div class="sub-header">
-        <div class="sub-back" onclick="switchPage('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+        <div class="sub-back" onclick="switchPage('feature-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
         <div class="sub-title">画中画播放</div><div></div>
       </div>
       <div class="detection-card">
@@ -4973,7 +5281,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
     <div class="page" id="page-camera-volume">
       <div class="safe-top"></div>
       <div class="sub-header">
-        <div class="sub-back" onclick="switchPage('settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+        <div class="sub-back" onclick="switchPage('feature-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
         <div class="sub-title">摄像机音量</div><div></div>
       </div>
       <div class="detection-card">
@@ -5011,7 +5319,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="toggle-switch on"></div>
           </div>
           <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
-            <div class="settings-item-content"><div class="settings-item-label">宝宝在位通知</div><div class="settings-item-desc">宝宝离开画面时发送通知</div></div>
+            <div class="settings-item-content"><div class="settings-item-label">宝宝跟随通知</div><div class="settings-item-desc">宝宝离开画面时发送通知</div></div>
             <div class="toggle-switch"></div>
           </div>
           <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
@@ -5045,16 +5353,26 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="safe-top"></div>
       <div class="sub-header">
         <div class="sub-back" onclick="switchPage('ai-guard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
-        <div class="sub-title">宝宝在位检测</div><div></div>
+        <div class="sub-title">宝宝跟随</div><div></div>
       </div>
       <div class="detection-card">
         <div class="detection-card-header">
-          <div class="detection-card-title">宝宝在位检测</div>
-          <div class="toggle-switch" onclick="toggleAIDetection(this, 'presenceStatusDesc', 'presenceSettingsBody')"></div>
+          <div class="detection-card-title">宝宝跟随</div>
+          <div class="toggle-switch" onclick="togglePresenceWithMutex(this, 'presenceStatusDesc', 'presenceSettingsBody')"></div>
         </div>
-        <div class="detection-card-desc">宝宝离开画面时自动告警</div>
+        <div class="detection-card-desc">摄像头跟随宝宝，离开画面时自动告警</div>
       </div>
       <div class="ai-detail-body" id="presenceSettingsBody">
+      <div class="settings-group">
+        <div class="settings-group-title">通知推送</div>
+        <div class="settings-list">
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">宝宝跟随通知</div><div class="settings-item-desc">宝宝离开画面时推送系统通知</div></div>
+            <div class="toggle-switch"></div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -5206,32 +5524,544 @@ input[type="range"].range-input::-webkit-slider-thumb {
     </div>
 
     <!-- ==================== PAGE: TIME FORMAT ==================== -->
-    <div class="page" id="page-time-format">
-      <div class="safe-top"></div>
-      <div class="sub-header">
-        <div class="sub-back" onclick="switchPage('feature-settings')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
-        <div class="sub-title">时间制式</div><div></div>
+    </div><!-- .screen -->
+  </div><!-- .workspace-main -->
+
+  <aside class="doc-panel" id="docPanel">
+    <div class="doc-panel-header">
+      <div class="doc-panel-header-left">
+        <h2 id="docPanelTitle">首页</h2>
+        <p id="docPanelSummary">展示用户已绑定设备的状态、预览画面，并作为进入设备详情页的一级入口。</p>
       </div>
-      <div class="detection-card">
-        <div class="detection-card-title" style="margin-bottom:12px">时间显示格式</div>
-        <div style="display:flex;gap:8px">
-          <div class="sensitivity-btn active" onclick="selectTimeFormat(this)">24 小时制</div>
-          <div class="sensitivity-btn" onclick="selectTimeFormat(this)">12 小时制</div>
-        </div>
-        <div class="detection-card-desc" style="margin-top:8px">控制摄像头画面上时间戳、事件列表时间等展示格式。录像回放时间轴刻度固定使用 24 小时制。</div>
-      </div>
+      <a class="doc-source-link" href="https://hapa8fkuicz.feishu.cn/wiki/Tds5wW61DiOOTKkhe7JcLnBgnWb" target="_blank" rel="noopener noreferrer">原始文档</a>
     </div>
 
-  </div><!-- .screen -->
-</div><!-- .phone-frame -->
+    <div class="doc-panel-body" id="docPanelBody">
+      <div class="doc-section-card" id="docConfigCard">
+        <div class="doc-section-title" id="docConfigTitle">功能描述</div>
+        <div class="doc-list" id="docConfigList"></div>
+      </div>
+
+      <div class="doc-section-card" id="docCrossRulesCard">
+        <div class="doc-section-title" id="docCrossRulesTitle">其他规则</div>
+        <div class="doc-list" id="docCrossRulesList"></div>
+      </div>
+
+      <div class="doc-placeholder" id="docPlaceholder">该页面的需求文档内容还没整理进来。</div>
+    </div>
+  </aside>
 
 <script>
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  themeVariables: {
+    primaryColor: '#FDF0E8',
+    primaryTextColor: '#2C2A27',
+    primaryBorderColor: '#D4875C',
+    lineColor: '#9E9792',
+    secondaryColor: '#E8F0E9',
+    tertiaryColor: '#FBF5E4',
+    fontSize: '13px'
+  },
+  flowchart: { curve: 'basis', padding: 15 }
+});
+
+const prdContentMap = {
+  home: {
+    title: '首页',
+    positioning: '展示用户已绑定设备，以卡片形式承接设备状态判断、画面预览和进入详情页的一级入口。',
+    configItems: [
+      '<strong>设备卡片</strong>：上方画面区域 + 下方设备信息栏（左侧设备图标，右侧设备名称）。',
+      [
+        '<strong>卡片状态</strong>：根据设备在线状态呈现不同画面。',
+        '<strong>在线正常</strong>：画面展示摄像头最后一帧做模糊处理，不额外显示在线标识；用户可预览画面，也可进入详情页。',
+        '<strong>在线休眠</strong>：画面显示"设备休眠中"提示 + 休眠态文案；提供"唤醒设备"按钮，点击后自动加载视频流。',
+        '<strong>离线</strong>：画面显示离线背景 + "设备离线"提示；状态标识显示灰色圆点 + "离线"并展示离线时间。'
+      ],
+      [
+        '<strong>播放控制</strong>：首页卡片内嵌的播放能力。',
+        '<strong>播放按钮</strong>：未播放时画面中央显示播放按钮；点击后开始加载视频流，加载时显示"正在建立加密传输中"。',
+        '<strong>播放控制栏</strong>：播放中时底部显示声音开关、播放/暂停、全屏；3 秒未操作后自动隐藏。',
+        '<strong>暂停状态</strong>：画面冻结在最后一帧，仅显示播放按钮，其他控制按钮隐藏。'
+      ],
+      '<strong>电池信息（BM05不支持）</strong>：充电中 → 充电图标 + 电量百分比；未充电 → 电池图标 + 电量百分比；省电模式开启中 → 省电样式 + "省电"标签；连续充电 24 小时后 → 不再显示电池图标。'
+    ],
+    crossRules: [
+      '<strong>离线仍可进入详情页</strong>：设备离线时仍可进入详情页，但直播相关操作不可用。',
+      '<strong>BM05不支持电池</strong>：BM05 不支持电池电量展示和低电量设置相关功能。',
+      '<strong>休眠需特殊处理</strong>：在线休眠的设备不能当成正常在线设备处理，必须显示"设备休眠中"并提供唤醒入口。'
+    ]
+  },
+  detail: {
+    title: '直播页',
+    positioning: '从首页设备卡片进入后的核心操作页面，用户在此看直播、控设备、看事件。',
+    configItems: [
+      '<strong>顶部导航</strong>：左侧返回首页，中部设备名称，右侧设置按钮。',
+      '<strong>视频流</strong>：画面比例固定 16:9；左上角品牌 Logo + 当前时间（精确到秒，跟随设备端时间制式）；右上角温度、湿度；支持电池的机型右上角展示电池图标 + 电量百分比。',
+      '<strong>休眠/唤醒</strong>：开启后摄像头进入完全休眠状态并实现物理遮蔽；关闭后恢复正常工作。',
+      '<strong>声音开关</strong>：开启/关闭，控制设备端音频接收。',
+      '<strong>画质切换</strong>：超清 2.5K / 高清 1080P / 标清 720P / 自动，默认自动；自动档根据网络状况选择画质。',
+      '<strong>全屏</strong>：强制横屏，全屏展示视频流。',
+      '<strong>横屏模式</strong>：左上角返回按钮退出横屏；顶部时间戳；左下角云台控制区域；画面内静音、画质、拍照、录像、语音对讲按钮。',
+      '<strong>抓拍</strong>：截取当前画面，同时保存到系统相册和 App 内置相册，保存后显示 2 秒缩略预览。',
+      '<strong>录像</strong>：开始/停止录像，同时保存到系统相册和 App 内置相册，保存后显示 2 秒视频缩略预览。',
+      '<strong>语音对讲</strong>：位于中央且图标较大；点击开始，再次点击结束；静音时点击对讲自动取消静音并开始采集音频；对讲结束后保持音频接收开启。',
+      '<strong>云台控制</strong>：展开操作面板后控制上/下/左/右方向。',
+      '<strong>更多功能</strong>：人脸放大（有激活/未激活状态）、夜视模式（自动/打开/关闭）、画中画（调用系统 PiP）。',
+      [
+        '<strong>安抚音乐</strong>：详情页内嵌的安抚音乐快捷面板。',
+        '<strong>快捷播放</strong>：直接播放/暂停当前曲目。',
+        '<strong>歌曲列表</strong>：点击曲目即播放，当前曲目高亮。',
+        '<strong>音量</strong>：10% - 100%，步长 10%，不可调至 0%。',
+        '<strong>播放模式</strong>：全部循环 / 单曲循环，二选一。',
+        '<strong>音效切换</strong>：开始时淡入约 2 秒，结束时淡出约 3 秒；强制要求，不提供关闭入口，设备端功能。'
+      ],
+      [
+        '<strong>智能看护事件列表</strong>：底部展示最近告警事件。',
+        '<strong>事件列表</strong>：默认展示最近 3 条告警事件，支持上下滑动查看最近 24 小时更多事件；事件字段包括告警缩略图/截图、视频时长、告警时间、告警类型、告警说明；点击"查看全部"进入回放事件视图。',
+        '<strong>空状态：未开启</strong>：插图 + "还未开启任何看护功能"，提供"去开启"跳转设置页 AI 告警分组。',
+        '<strong>空状态：已开启无事件</strong>：插图 + "暂无告警事件"。'
+      ],
+      '<strong>底部入口</strong>：固定承接回放、相册、智能看护等后续入口。'
+    ],
+    crossRules: [
+      '<strong>对讲与安抚音乐互斥</strong>：播放安抚音乐会打断对讲，对讲也会打断安抚音乐，App 侧 UI 开关状态需跟随切换。',
+      '<strong>操作栏自动隐藏</strong>：画面操作栏 3 秒未操作后自动隐藏，点击画面可重新显示。',
+      '<strong>电量 24 小时规则</strong>：连续 24 小时插电后不展示电源图标。',
+      '<mermaid>flowchart TD\n  A[告警事件触发] --> B{用户所在场景}\n  B -->|设备详情页| C[底部事件列表\\n动态插入\\n不弹横幅]\n  B -->|App内其他页| D[顶部滑入告警横幅\\n3秒后自动消失\\n点击跳转详情页]\n  B -->|App后台/未打开| E{免打扰时段?}\n  E -->|是| F[仅记录事件\\n不发通知]\n  E -->|否| G[推送系统通知]\n  style C fill:#E8F0E9\n  style D fill:#E8F0E9\n  style G fill:#E8F0E9\n  style F fill:#FBF5E4</mermaid>',
+      '<strong>设备离线异常</strong>：视频画面区域展示离线时间，回放/相册/智能看护仍可访问，但直播相关操作按钮置灰不可点击。',
+      '<strong>SD 卡异常</strong>：详情页弹出"存储卡异常"弹窗；用户可查看或忽略；"查看"跳转存储设置页；同一异常每 30 天最多弹出一次。'
+    ]
+  },
+  playback: {
+    title: '录像回放',
+    positioning: '从详情页底部"回放"进入，查看历史录像与告警事件。返回时回到详情页直播画面。',
+    configItems: [
+      '<strong>回放类型</strong>：SD 卡回放（数据源为设备 SD 卡录像）/ 云回放（数据源为云端录像片段），区别仅在于视频来源不同，其他能力基本一致。',
+      '<strong>播放/暂停</strong>：按钮控制当前录像播放状态。',
+      '<strong>倍速播放</strong>：支持 1x / 2x / 4x / 8x / 16x 五档切换。',
+      '<strong>声音开关</strong>：开启/关闭，控制回放声音。',
+      '<strong>全屏</strong>：横屏全屏模式；画面内操作栏（播放/暂停、倍速、声音、拍照、录像）3 秒自动隐藏。',
+      '<strong>拍照</strong>：截取当前回放帧，保存到系统相册和 App 内置相册。',
+      '<strong>录像</strong>：录制当前回放内容，再次点击停止；保存到系统相册和 App 内置相册，不写入 SD 卡。',
+      '<strong>下载</strong>：保存当前片段到系统相册，完成后 Toast "已保存到相册"。',
+      '<strong>分享</strong>：导出后调起系统原生分享功能。',
+      '<strong>删除</strong>：弹出确认弹窗；SD 卡回放标题"删除 SD 卡录像"正文"确认删除该段 SD 卡录像吗？删除后将从设备存储卡中移除，且无法恢复。"；云回放标题"删除云端录像"正文"确认删除该段云端录像吗？删除后将从云端存储中移除，且无法恢复。"。',
+      [
+        '<strong>时间轴与事件</strong>：回放页底部的时间定位和事件检索区域。',
+        '<strong>时间轴</strong>：横向可缩放，最大跨度 24 小时；有录像时间段用深灰蓝色块标识；无录像时视频区域显示"暂无录像"；可拖动游标定位；双指张开放大/双指捏合缩小；时间刻度固定 24 小时制 00:00-24:00。',
+        '<strong>日期选择器</strong>：默认显示当前已选日期；有事件日期下方显示圆点；切换后刷新录像和事件。',
+        '<strong>事件类型筛选</strong>：支持全部事件、哭声、移动侦测、声音检测、宝宝跟随、围栏/禁区、温湿度。',
+        '<strong>事件列表</strong>：显示事件总数；每条包含缩略图、视频时长、告警类型、事件描述、发生时间。',
+        '<strong>点击事件</strong>：直接在时间轴上定位到事件时间点。'
+      ]
+    ],
+    crossRules: [
+      '<strong>时间轴不受时间制式影响</strong>：回放时间轴固定使用 24 小时制，不跟随设备端时间制式。',
+      '<strong>事件标记颜色</strong>：哭声检测红色、移动侦测黄色、声音检测橙色、宝宝跟随蓝色、围栏/禁区紫色、温湿度异常绿色。',
+      '<strong>无录像状态</strong>：时间轴无色块时，视频区域显示"暂无录像"。'
+    ]
+  },
+  album: {
+    title: '相册',
+    positioning: '从详情页底部"相册"进入，管理直播和回放产生的截图、录像。内容来源包含系统相册和 App 内置相册。',
+    configItems: [
+      '<strong>内容类型</strong>：截图与录像混合展示，不做类型分组。',
+      '<strong>分组方式</strong>：按日期分组，每组以日期为标题，例如"2026.4.3"。',
+      '<strong>排序</strong>：组内按拍摄时间倒序排列。',
+      '<strong>展示形式</strong>：网格形式；截图显示缩略图；录像显示第一帧缩略图，右下角叠加视频时长。',
+      '<strong>日期选择器</strong>：顶部提供日期选择器，点击指定日期快速跳转对应日期分组。',
+      '<strong>文件命名</strong>：图片 → image_年月日时分秒（如 image_20260409_224713）；视频 → video_年月日时分秒；同一秒多个同类文件末尾追加序号从 1 开始递增。',
+      [
+        '<strong>多选编辑</strong>：长按任意图片/视频进入多选，被长按项自动选中。',
+        '<strong>选中 1 项</strong>：展示"分享"和"删除"。',
+        '<strong>选中 2 项及以上</strong>：仅展示"删除"。',
+        '<strong>分享</strong>：调用系统原生分享功能，用户自主分享。',
+        '<strong>删除</strong>：弹出系统确认弹窗，确认后执行删除；App 内相册和系统相册都会删除对应内容。'
+      ],
+      [
+        '<strong>全屏预览</strong>：点击任意图片/视频进入全屏竖屏预览。',
+        '<strong>预览内容</strong>：图片静态展示原图；视频自动开始播放；顶部左侧返回 + 中间文件名称；左滑下一张，右滑上一张；视频底部保留进度条、播放/暂停、当前时长/总时长。',
+        '<strong>底部操作</strong>：分享、删除。'
+      ]
+    ],
+    crossRules: [
+      '<strong>删除同步</strong>：从 App 内置相册删除 → App 调起系统相册删除授权弹窗，用户确认后同步从系统相册删除，App 内也同步删除；从系统相册删除 → App 内同步删除。'
+    ]
+  },
+  settings: {
+    title: '设置',
+    positioning: '从详情页右上角设置按钮进入，统一管理设备信息、智能看护、功能设置和通用设置。',
+    configItems: [
+      [
+        '<strong>分组结构</strong>：设置页分四个分组，每个分组承接不同类别的配置和操作。',
+        '<strong>设备信息</strong>：承接设备名称、SN、MAC、IP、WiFi 名称、固件版本等查看与编辑。',
+        '<strong>智能看护</strong>：承接宝宝跟随、AI 检测能力、通知管理、免打扰设置。',
+        '<strong>功能设置</strong>：承接画面、存储、画中画、摄像机音量、云台校准、电池管理等功能配置。',
+        '<strong>通用设置</strong>：承接云存储、固件升级、共享设备、重启设备、删除设备等通用操作。'
+      ],
+      '<strong>云存储</strong>：点击后跳转涂鸦页面，二级页面内容由涂鸦提供，App 不干预。',
+      '<strong>固件升级</strong>：点击进入升级流程，当前调用涂鸦 SDK OTA 页面；后续原子化上线后切换到原子化 OTA 页面。',
+      '<strong>共享设备</strong>：点击进入共享流程页面，调用通用的共享设备页面功能。',
+      '<strong>重启设备</strong>：点击后弹出确认弹窗；正文"确认重启该设备吗？重启期间设备将短暂离线，直播画面中断，约 30 秒后自动恢复。"；确认后提示"设备重启中，请稍候..."。',
+      '<strong>删除设备</strong>：点击后弹出二次确认弹窗；正文"确认删除该设备吗？删除后，该设备将从当前账号下移除，需重新绑定后才可继续使用。"；确认后执行删除并返回设备列表页。'
+    ],
+    crossRules: [
+      '<strong>权限申请</strong>：麦克风权限在点击语音对讲时触发，拒绝后引导"开启麦克风以对讲"；相册权限在点击截屏/录像/下载时触发，拒绝后引导"开启相册访问权限，保存素材到本地"；通知权限不首次弹申请，智能看护页顶部常驻引导。'
+    ]
+  },
+  'firmware-update': {
+    title: '固件升级',
+    positioning: '从设置页进入，检查并安装最新固件。当前阶段由涂鸦 SDK OTA 页面承接。',
+    configItems: [
+      '<strong>页面说明</strong>：当前升级主流程由涂鸦 SDK OTA 页面承接，App 侧不自行实现完整升级流程；后续原子化支持 OTA 模块后可切换为原子化页面和能力。'
+    ],
+    crossRules: []
+  },
+  'device-info': {
+    title: '设备信息',
+    positioning: '从设置页进入，展示设备基础信息，并承接设备名称编辑与只读字段复制。',
+    configItems: [
+      '<strong>设备名称</strong>：可编辑；点击进入"修改设备名称"弹窗，输入框默认回填当前名称，字数限制最多 30 字符，按钮为取消/保存；校验规则：去除首尾空格后不能为空，超出 30 字符时不可保存。',
+      '<strong>SN（序列号）</strong>：不可编辑；长按自动复制到剪贴板，Toast "已复制到剪贴板"。',
+      '<strong>MAC 地址</strong>：不可编辑；长按自动复制到剪贴板，Toast "已复制到剪贴板"。',
+      '<strong>IP 地址</strong>：不可编辑；长按自动复制到剪贴板，Toast "已复制到剪贴板"。',
+      '<strong>WiFi 名称</strong>：不可编辑；展示当前连接的 SSID 名称。',
+      '<strong>固件版本</strong>：不可编辑；展示当前版本。'
+    ],
+    crossRules: []
+  },
+  'ai-guard': {
+    title: '智能看护',
+    positioning: '从设置页进入，配置 AI 检测能力、统一推送通知管理、免打扰时间段和通知样式规范。',
+    configItems: [
+      '<strong>移动侦测</strong>：检测开关 + 灵敏度高/中/低；检测画面中移动物体，触发告警并记录事件；推送标题"移动侦测"正文"设备名称xxx · 检测到有人移动"带附图。',
+      '<strong>哭声检测</strong>：检测开关 + 灵敏度 + 安抚音乐开关 + 音乐列表 + 自定义音频 + 生效时间段；识别宝宝哭声，时间段外不自动播放音乐；推送标题"哭声检测"正文"设备名称xxx · 检测到宝宝哭声"带附图。',
+      '<strong>声音检测</strong>：检测开关 + 灵敏度高/中/低，默认中档；环境音满足灵敏度阈值时触发告警；推送标题"声音检测"正文"设备名称xxx · 检测到异常声音"带附图。',
+      '<strong>宝宝跟随（BM05不支持）</strong>：检测开关；开启后摄像头自动跟随画面中宝宝移动（人形追踪）；当宝宝离开画面且摄像头追踪后仍无法找到宝宝时，触发告警通知用户；推送标题"宝宝离开提醒"正文"设备名称xxx · 宝宝已离开画面检测区域"带附图。',
+      '<strong>安全围栏</strong>：检测开关 + 添加/修改/删除围栏 + 实时显示围栏开关；宝宝走出围栏范围触发告警；最多 1 个围栏；推送标题"安全围栏告警"正文"设备名称xxx · 宝宝已走出安全区域"带附图。',
+      '<strong>婴儿危险区域/禁区（BM05不支持）</strong>：检测开关 + 添加/修改/删除禁区 + 实时显示禁区开关 + 闯入声音提醒；宝宝接近或进入危险区域触发告警并在设备端播放录制声音；最多 3 个禁区，不得与围栏交叉；推送标题"禁区告警"正文"设备名称xxx · 宝宝已进入禁区"带附图。',
+      '<strong>温度告警</strong>：检测开关 + 最低温度 + 最高温度；当前温度超出设定范围触发告警，建议婴儿房温度 20-26°C；推送标题"温度异常"正文"设备名称xxx · 当前温度 XX°C，已超出设定范围"带附图。',
+      '<strong>湿度告警</strong>：检测开关 + 最低湿度 + 最高湿度，滑动条范围 10%-90%；当前湿度超出设定范围触发告警；推送标题"湿度异常"正文"设备名称xxx · 当前湿度 XX%，已超出设定范围"带附图。',
+      '<strong>设备离线通知</strong>：在通知管理中控制是否推送；推送标题"设备离线"正文"设备名称xxx · 设备离线请及时检查"，无附图。',
+      '<strong>低电量提醒（BM05不支持）</strong>：在通知管理中控制是否推送；推送标题"电量提醒"正文"设备名称xxx · 设备电量低（XX%），请及时充电"，无附图。',
+      '<strong>通知管理</strong>：统一管理各类检测通知和设备通知；只有检测功能已开启时，对应通知项才允许开启。',
+      '<strong>免打扰时间段</strong>：开关 + 开始时间/结束时间；生效范围包括 AI 告警通知、设备离线通知、低电量提醒；免打扰期间不推送系统通知，结束后不补发；免打扰期间告警与设备消息仍正常记录在事件列表。',
+      [
+        '<strong>通知样式</strong>：各类告警推送的系统通知呈现规范。',
+        '<strong>有缩略图</strong>：左侧 Logo + 中间文字区 + 右侧缩略图；适用于移动、哭声、声音、宝宝跟随、安全围栏、禁区等视觉类告警。',
+        '<strong>无缩略图</strong>：左侧 Logo + 中间文字区；适用于温湿度、设备离线、低电量等设备类/纯音频告警。'
+      ]
+    ],
+    crossRules: [
+      '<strong>检测关闭时</strong>：不发送提醒，也不记录事件。',
+      '<strong>权限引导</strong>：智能看护页顶部常驻"强烈建议开启通知权限"并提供【去设置】。',
+      '<strong>与围栏/禁区互斥</strong>：开启宝宝跟随后，已设置的安全围栏和禁区将自动失效，需强弹窗提醒用户；关闭宝宝跟随后，围栏和禁区恢复可用。'
+    ]
+  },
+  'motion-settings': {
+    title: '移动侦测',
+    positioning: '从智能看护页进入，开启移动侦测并设置灵敏度。',
+    configItems: [
+      '<strong>检测开关</strong>：开启/关闭移动侦测能力。',
+      '<strong>灵敏度</strong>：高/中/低三档；检测画面中移动物体，触发告警并记录事件。',
+      '<strong>通知推送开关</strong>：控制移动侦测是否推送系统通知；与通知管理页中移动侦测通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: [
+      '<strong>通知前置</strong>：只有移动侦测功能已开启时，通知管理中对应通知项才允许开启。'
+    ]
+  },
+  'cry-settings': {
+    title: '哭声检测',
+    positioning: '从智能看护页进入，配置哭声检测灵敏度、安抚音乐联动、自定义音频和生效时间段。',
+    configItems: [
+      '<strong>检测开关</strong>：开启/关闭哭声检测。',
+      '<strong>灵敏度</strong>：配置哭声检测灵敏度。',
+      [
+        '<strong>安抚音乐</strong>：检测到哭声时自动播放安抚音乐的联动配置。',
+        '<strong>开关</strong>：检测开关关闭时置灰；开启后检测到哭声自动播放选定安抚音乐。',
+        '<strong>音乐列表</strong>：展示所有可选曲目，每条显示名称和时长；点击在手机上试听，再次点击停止；当前选中曲目高亮。',
+        '<strong>自定义音频</strong>：仅支持录制一条，重新录制自动替换上一条；录制方式为点击开始/点击停止，录制中实时显示时长；最长 30 秒，达到上限后自动停止；录制完成后自动播放一遍供确认；音频名称系统自动生成，默认"自定义音频+日期"，不支持修改；录制后出现在音乐列表中，可选中使用也可删除。',
+        '<strong>音效切换</strong>：开始时淡入约 2 秒，结束时淡出约 3 秒；强制要求，不提供关闭入口，设备端功能与 App 无关。'
+      ],
+      '<strong>生效时间段</strong>：仅在设定的每日开始时间和结束时间内，检测到哭声才自动播放音乐。',
+      '<strong>通知推送开关</strong>：控制哭声检测是否推送系统通知；与通知管理页中哭声检测通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: [
+      '<strong>时间段外不播放</strong>：生效时间段外检测到哭声不自动播放安抚音乐。',
+      '<strong>通知前置</strong>：只有哭声检测功能已开启时，通知管理中对应通知项才允许开启。'
+    ]
+  },
+  'sound-settings': {
+    title: '环境声音检测',
+    positioning: '从智能看护页进入，开启声音检测并配置灵敏度。',
+    configItems: [
+      '<strong>检测开关</strong>：开启/关闭声音检测。',
+      '<strong>灵敏度</strong>：高/中/低三档，默认中档；环境音满足灵敏度阈值时触发告警并记录事件。',
+      '<strong>通知推送开关</strong>：控制声音检测是否推送系统通知；与通知管理页中声音检测通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: [
+      '<strong>通知前置</strong>：只有声音检测功能已开启时，通知管理中对应通知项才允许开启。'
+    ]
+  },
+  'zone-settings': {
+    title: '安全区域',
+    positioning: '从智能看护页进入，配置安全围栏和婴儿危险区域。',
+    configItems: [
+      '<strong>添加入口</strong>：画面底部提供"添加围栏"和"添加禁区"两个按钮。',
+      '<strong>围栏</strong>：检测开关 + 添加/修改/删除 + 实时显示开关；最多 1 个；默认绿色矩形；8 个控制点（4 角点 + 4 边中点）可拖拽为任意八边形；拖拽区域内部可整体平移；选中后删除按钮高亮；宝宝走出围栏范围触发告警。',
+      '<strong>禁区（BM05不支持）</strong>：检测开关 + 添加/修改/删除 + 实时显示开关；最多 3 个；默认红色矩形；8 个控制点可拖拽为任意八边形；拖拽内部可整体平移；选中后删除按钮高亮；宝宝接近或进入危险区域触发告警。',
+      '<strong>闯入声音提醒</strong>：开关；宝宝闯入禁区时在设备端播放用户录制的声音。',
+      '<strong>录制闯入声音</strong>：仅支持录制一条，重新录制自动替换上一条；录制方式为点击开始/点击停止，录制中实时显示时长；最长 30 秒，达到上限后自动停止；录制完成后自动播放一遍供确认；音频名称系统自动生成，不支持修改。',
+      '<strong>通知推送开关</strong>：控制安全围栏和禁区是否推送系统通知；与通知管理页中安全围栏/禁区通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: [
+      '<strong>交叉限制</strong>：围栏不得与禁区交叉；发生交叉时高亮冲突区域并提示"安全围栏区域和禁区不得交叉"，交叉时新增区域不生效。',
+      '<strong>数量上限</strong>：围栏最多 1 个，禁区最多 3 个；达到上限后对应添加按钮置灰。',
+      '<strong>与宝宝跟随互斥</strong>：设置围栏或禁区时，如宝宝跟随已开启，强弹窗提醒用户；弹窗标题"宝宝跟随将失效"正文"设置围栏/禁区后，摄像头将固定监控指定区域，宝宝跟随功能将不再生效。确认设置？"按钮为取消/确认设置。',
+      '<strong>被宝宝跟随覆盖</strong>：宝宝跟随开启后，围栏和禁区自动失效，开关置灰；宝宝跟随关闭后恢复可用。'
+    ]
+  },
+  'temp-settings': {
+    title: '温度告警',
+    positioning: '从智能看护页进入，配置温度告警开关和阈值。',
+    configItems: [
+      '<strong>检测开关</strong>：开启/关闭温度告警。',
+      '<strong>最低温度</strong>：设定最低温度阈值。',
+      '<strong>最高温度</strong>：设定最高温度阈值；当前温度超出设定范围触发告警，建议婴儿房温度 20-26°C。',
+      '<strong>通知推送开关</strong>：控制温度告警是否推送系统通知；与通知管理页中温度告警通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: []
+  },
+  'humidity-settings': {
+    title: '湿度告警',
+    positioning: '从智能看护页进入，配置湿度告警开关和阈值。',
+    configItems: [
+      '<strong>检测开关</strong>：开启/关闭湿度告警。',
+      '<strong>最低湿度</strong>：滑动条设定最低湿度。',
+      '<strong>最高湿度</strong>：滑动条设定最高湿度，范围 10%-90%；当前湿度超出设定范围触发告警。',
+      '<strong>通知推送开关</strong>：控制湿度告警是否推送系统通知；与通知管理页中湿度告警通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: []
+  },
+  'dnd-settings': {
+    title: '免打扰时段',
+    positioning: '从智能看护页进入，配置通知免打扰时间段。',
+    configItems: [
+      '<strong>开关</strong>：启用/关闭。',
+      '<strong>时间段设置</strong>：开始时间/结束时间。',
+      '<strong>生效范围</strong>：所有系统通知，包括 AI 告警通知、设备离线通知、低电量提醒。'
+    ],
+    crossRules: [
+      '<strong>不补发</strong>：免打扰结束后不补发系统通知。',
+      '<strong>事件仍记录</strong>：免打扰期间产生的告警与设备消息仍正常记录在事件列表中。'
+    ]
+  },
+  'feature-settings': {
+    title: '功能设置',
+    positioning: '从设置页进入，统一管理设备端功能配置，分发到各二级设置页。',
+    configItems: [
+      '<strong>存储设置</strong>：SD 卡状态 + 录像模式 + 循环覆盖；容量展示 + 格式化入口 + 事件录制/始终录制二选一；事件录制仅在 AI 事件触发时录像，始终录制为 24 小时持续录像；写满后默认循环覆盖最早录像。',
+      '<strong>画面设置</strong>：旋转画面（正向/反向，默认正向，提供最后一帧预览图）+ 夜视功能（自动/打开/关闭，默认自动）；旋转示意图截取最后一帧，用户旋转后图片同步旋转；夜视示意图为固定图片，需让用户看到彩色与黑白对比效果。',
+      '<strong>画中画播放</strong>：自动画中画开关；开启后直播退出 App 自动以系统 PiP 播放，调用系统级画中画能力。',
+      '<strong>摄像机音量</strong>：滑动条调节摄像头端扬声器音量，0%-100%，步长 10%，共 11 档；影响对讲/音乐播放等设备端输出。',
+      '<strong>云台校准</strong>：点击校准 + 二次确认弹窗；标题"确认校准云台吗？"正文"云台校准将修复摄像机在长期转动中造成的云台角度少量偏移的问题。确认后，摄像机将旋转一周进行云台校准，并自动回到默认初始位置。"；手动触发，用于长期转动后的偏移修复。',
+      '<strong>省电模式（BM05不支持）</strong>：手动省电/自动开启/自动关闭 + 开关 + 低电量阈值；阈值 10%-90%，步长 10%，默认 50%（具体以设备测试为准）；未插电或低电量自动开启，插电或电量恢复后按规则关闭；与电池展示、休眠策略联动。'
+    ],
+    crossRules: []
+  },
+  'storage-settings': {
+    title: '存储设置',
+    positioning: '从功能设置页进入，查看 SD 卡状态和容量，配置录像模式。',
+    configItems: [
+      [
+        '<strong>SD 卡状态</strong>：根据 SD 卡情况呈现不同界面。',
+        '<strong>正常状态</strong>：显示剩余容量/总容量，提供格式化入口（二次确认后执行格式化）。',
+        '<strong>异常状态</strong>：显示"存储卡异常，建议格式化后重新使用"，提供格式化入口（二次确认后执行格式化）。',
+        '<strong>未插入</strong>：显示"未检测到存储卡"，不显示容量信息，不提供格式化入口。'
+      ],
+      '<strong>事件录制</strong>：仅在已开启的 AI 检测算法触发事件时录像；固定包含触发前 5 秒画面（预录制）和事件结束后继续录制 10 秒（延后录制），两项不可关闭。',
+      '<strong>始终录制</strong>：24 小时持续录制，所有内容保存到存储卡；存储卡写满后循环覆盖最早录像。',
+      '<strong>录像模式互斥</strong>：事件录制和始终录制为二选一关系。'
+    ],
+    crossRules: []
+  },
+  'display-settings': {
+    title: '画面设置',
+    positioning: '从功能设置页进入，配置画面方向和夜视模式。',
+    configItems: [
+      [
+        '<strong>旋转画面</strong>：正向/反向，默认正向。',
+        '<strong>预览图</strong>：截取画面最后一帧作为预览；点击选项后直接预览旋转效果；用户旋转画面后，示意图同步旋转。'
+      ],
+      [
+        '<strong>夜视功能</strong>：自动/打开/关闭，默认自动；自动：环境亮度较差时自动开启；打开：始终黑白夜视；关闭：不使用夜视。',
+        '<strong>示意图</strong>：固定图片；设计时需让用户看到彩色和黑白的对比效果。'
+      ]
+    ],
+    crossRules: []
+  },
+  'pip-settings': {
+    title: '画中画播放',
+    positioning: '从功能设置页进入，控制直播退出 App 后是否自动以画中画方式继续播放。',
+    configItems: [
+      '<strong>开关</strong>：启用/关闭；开启后直播退出 App 自动以系统 PiP 播放，依赖系统级画中画能力。'
+    ],
+    crossRules: []
+  },
+  'camera-volume': {
+    title: '摄像机音量',
+    positioning: '从功能设置页进入，调节摄像头端扬声器音量。',
+    configItems: [
+      '<strong>滑动条</strong>：0%-100%，步长 10%，共 11 档；调节摄像头端扬声器音量，影响对讲/安抚音乐等设备端声音输出。'
+    ],
+    crossRules: []
+  },
+  'device-notification-settings': {
+    title: '通知管理',
+    positioning: '从智能看护页进入，统一管理 AI 检测通知和设备通知。',
+    configItems: [
+      [
+        '<strong>通知开关</strong>：各类告警和设备通知的独立推送控制。',
+        '<strong>AI 告警通知</strong>：移动侦测、哭声检测、声音检测、宝宝跟随、安全围栏、禁区、温度告警、湿度告警各有独立推送开关。',
+        '<strong>设备类通知</strong>：设备离线、低电量提醒各有独立推送开关。',
+        '<strong>前置依赖</strong>：只有对应检测功能已开启时，通知项才允许开启。',
+        '<strong>快捷入口</strong>：每个检测子页面底部也有对应的通知推送开关，操作与通知管理页联动同步。'
+      ]
+    ],
+    crossRules: [
+      '<strong>低电量提醒 BM05不支持</strong>：BM05 不支持低电量提醒通知开关。'
+    ]
+  },
+  'presence-settings': {
+    title: '宝宝跟随',
+    positioning: '从智能看护页进入，开启宝宝跟随，摄像头将自动跟随宝宝移动，并在宝宝离开画面时触发告警。',
+    configItems: [
+      '<strong>检测开关</strong>：启用/关闭；开启后摄像头自动跟随画面中宝宝移动，宝宝离开画面后触发告警。',
+      '<strong>告警推送</strong>：推送标题"宝宝离开提醒"正文"设备名称xxx · 宝宝已离开画面检测区域"带附图。',
+      '<strong>通知推送开关</strong>：控制宝宝跟随是否推送系统通知；与通知管理页中宝宝在位通知项联动，此处操作同步反映到通知管理页。'
+    ],
+    crossRules: [
+      '<strong>BM05不支持</strong>：宝宝跟随 BM05 不支持。',
+      '<strong>与围栏/禁区互斥</strong>：开启宝宝跟随时，如已有围栏或禁区设置，强弹窗提醒用户；弹窗标题"围栏/禁区将失效"正文"开启宝宝跟随后，摄像头会跟随宝宝移动，您已设置的安全围栏和禁区将不再生效。确认开启？"按钮为取消/确认开启。',
+      '<strong>反向互斥</strong>：设置围栏或禁区时，如宝宝跟随已开启，强弹窗提醒用户；弹窗标题"宝宝跟随将失效"正文"设置围栏/禁区后，摄像头将固定监控指定区域，宝宝跟随功能将不再生效。确认设置？"按钮为取消/确认设置。'
+    ]
+  },
+  'temperature-humidity-settings': {
+    title: '温湿度报警',
+    positioning: '从智能看护页进入，统一配置温度和湿度告警阈值。',
+    configItems: [
+      '<strong>温度告警</strong>：检测开关 + 最低温度 + 最高温度；当前温度超出设定范围触发告警，建议婴儿房温度 20-26°C。',
+      '<strong>湿度告警</strong>：检测开关 + 最低湿度 + 最高湿度；滑动条范围 10%-90%；当前湿度超出设定范围触发告警。'
+    ],
+    crossRules: []
+  },
+  'power-save-settings': {
+    title: '电池管理',
+    positioning: '从功能设置页进入，查看电量和供电状态，切换正常/省电模式，配置低电量自动省电。',
+    configItems: [
+      '<strong>电量状态卡片</strong>：展示当前电量百分比、供电状态、当前模式标签。',
+      [
+        '<strong>电源模式</strong>：正常模式与省电模式的切换和自动省电配置。',
+        '<strong>模式选择</strong>：正常模式（性能最佳，功耗较高）/ 省电模式（降低待机耗电，但事件告警会有延迟）。',
+        '<strong>自动省电</strong>：开启后电量低于阈值时自动进入省电模式。',
+        '<strong>低电量阈值</strong>：滑动条 10%-90%，步长 10%；默认 30%（具体以设备测试为准，后续可能修改）。'
+      ]
+    ],
+    crossRules: [
+      '<strong>常电强制正常模式</strong>：接通电源后省电模式置灰不可选，设备强制为正常模式。',
+      '<strong>重新上电恢复</strong>：设备重新上电后直接切换到正常模式。',
+      '<strong>BM05不支持</strong>：电池管理页面仅在支持电池能力的机型上开放。',
+      '<strong>联动关系</strong>：省电模式需与电池展示、设备休眠策略联动，首页和详情页的电量/省电状态要同步反映。'
+    ]
+  },
+  'cloud-storage': {
+    title: '云存储',
+    positioning: '从通用设置进入云存储服务页面，当前二级页面内容由涂鸦提供，App 只负责入口承接。',
+    configItems: [
+      '<strong>页面说明</strong>：二级页面由涂鸦提供，App 不干预页面内容。'
+    ],
+    crossRules: []
+  },
+};
+
+function renderDocList(containerId, items) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  let mainIndex = 0;
+  container.innerHTML = items.map((item) => {
+    const mermaidMatch = typeof item === 'string' && item.match(/^<mermaid>(.*?)<\/mermaid>$/s);
+    if (mermaidMatch) {
+      return `<div class="doc-mermaid-wrapper"><pre class="mermaid">${mermaidMatch[1]}</pre></div>`;
+    }
+    if (Array.isArray(item)) {
+      const parentText = item[0];
+      const children = item.slice(1);
+      const childrenHtml = children.map((child, ci) => {
+        const childMermaid = typeof child === 'string' && child.match(/^<mermaid>(.*?)<\/mermaid>$/s);
+        if (childMermaid) {
+          return `<div class="doc-mermaid-wrapper"><pre class="mermaid">${childMermaid[1]}</pre></div>`;
+        }
+        return `<div class="doc-list-sub-item">
+          <div class="doc-list-sub-marker">${ci + 1}</div>
+          <div class="doc-list-sub-text">${child}</div>
+        </div>`;
+      }).join('');
+      mainIndex++;
+      return `<div class="doc-list-item">
+        <div class="doc-list-marker">${mainIndex}</div>
+        <div class="doc-list-text">${parentText}
+          <div class="doc-list-group">${childrenHtml}</div>
+        </div>
+      </div>`;
+    }
+    mainIndex++;
+    return `<div class="doc-list-item">
+      <div class="doc-list-marker">${mainIndex}</div>
+      <div class="doc-list-text">${item}</div>
+    </div>`;
+  }).join('');
+  if (typeof mermaid !== 'undefined') {
+    mermaid.run({ nodes: container.querySelectorAll('.mermaid') });
+  }
+}
+
+function updateDocPanel(pageName) {
+  const content = prdContentMap[pageName];
+  const configCard = document.getElementById('docConfigCard');
+  const crossRulesCard = document.getElementById('docCrossRulesCard');
+  const placeholder = document.getElementById('docPlaceholder');
+
+  if (!content) {
+    document.getElementById('docPanelTitle').textContent = '需求文档整理中';
+    document.getElementById('docPanelSummary').textContent = '这个页面的需求说明还没接入。';
+    renderDocList('docConfigList', []);
+    renderDocList('docCrossRulesList', []);
+    if (configCard) configCard.style.display = 'none';
+    if (crossRulesCard) crossRulesCard.style.display = 'none';
+    if (placeholder) placeholder.classList.add('visible');
+    return;
+  }
+
+  document.getElementById('docPanelTitle').textContent = content.title;
+  document.getElementById('docPanelSummary').textContent = content.positioning || '';
+  const configItems = content.configItems || [];
+  const crossRules = content.crossRules || [];
+  renderDocList('docConfigList', configItems);
+  renderDocList('docCrossRulesList', crossRules);
+  if (configCard) configCard.style.display = configItems.length ? '' : 'none';
+  if (crossRulesCard) crossRulesCard.style.display = crossRules.length ? '' : 'none';
+  if (placeholder) placeholder.classList.remove('visible');
+}
+
 // ========== PAGE NAVIGATION ==========
 function switchPage(name) {
   const pages = document.querySelectorAll('.page');
   pages.forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + name);
   if (target) { target.classList.add('active'); target.scrollTop = 0; }
+  updateDocPanel(name);
 }
 
 // ========== TOAST ==========
@@ -5282,6 +6112,78 @@ function handleAlertBannerClick() { hideAlertBanner(); switchPage('detail'); }
 
 // ========== TOGGLE SWITCH ==========
 function toggleSwitch(el) { el.classList.toggle('on'); }
+function togglePresenceWithMutex(el, statusDescId, bodyId) {
+  const willTurnOn = !el.classList.contains('on');
+  if (willTurnOn) {
+    // 检查围栏/禁区是否已开启
+    const zoneToggle = document.querySelector('#page-zone-settings .toggle-switch');
+    if (zoneToggle && zoneToggle.classList.contains('on')) {
+      showModal('围栏/禁区将失效', '<p>开启宝宝跟随后，摄像头会跟随宝宝移动，您已设置的安全围栏和禁区将不再生效。确认开启？</p>', [
+        { label: '取消', class: 'modal-btn-secondary', action: () => hideModal() },
+        { label: '确认开启', class: 'modal-btn-primary', action: () => {
+          hideModal();
+          // 关闭围栏/禁区
+          if (zoneToggle) {
+            zoneToggle.classList.remove('on');
+            const zoneDesc = document.getElementById('zoneStatusDesc');
+            if (zoneDesc) zoneDesc.textContent = '关';
+            const zoneBody = document.getElementById('zoneSettingsBody');
+            if (zoneBody) { zoneBody.classList.remove('visible'); zoneBody.classList.add('disabled'); }
+          }
+          el.classList.add('on');
+          const desc = document.getElementById(statusDescId);
+          if (desc) desc.textContent = '开';
+          const body = document.getElementById(bodyId);
+          if (body) { body.classList.add('visible'); body.classList.remove('disabled'); }
+          showToast('宝宝跟随已开启，围栏/禁区已关闭');
+        }}
+      ]);
+      return;
+    }
+  }
+  el.classList.toggle('on');
+  const isOn = el.classList.contains('on');
+  const desc = document.getElementById(statusDescId);
+  const body = document.getElementById(bodyId);
+  if (desc) desc.textContent = isOn ? '开' : '关';
+  if (body) { body.classList.toggle('visible', isOn); body.classList.toggle('disabled', !isOn); }
+}
+function toggleZoneWithMutex(el, statusDescId, bodyId) {
+  const willTurnOn = !el.classList.contains('on');
+  if (willTurnOn) {
+    // 检查宝宝跟随是否已开启
+    const presenceToggle = document.querySelector('#page-presence-settings .toggle-switch');
+    if (presenceToggle && presenceToggle.classList.contains('on')) {
+      showModal('宝宝跟随将失效', '<p>设置围栏/禁区后，摄像头将固定监控指定区域，宝宝跟随功能将不再生效。确认设置？</p>', [
+        { label: '取消', class: 'modal-btn-secondary', action: () => hideModal() },
+        { label: '确认设置', class: 'modal-btn-primary', action: () => {
+          hideModal();
+          // 关闭宝宝跟随
+          if (presenceToggle) {
+            presenceToggle.classList.remove('on');
+            const presenceDesc = document.getElementById('presenceStatusDesc');
+            if (presenceDesc) presenceDesc.textContent = '关';
+            const presenceBody = document.getElementById('presenceSettingsBody');
+            if (presenceBody) { presenceBody.classList.remove('visible'); presenceBody.classList.add('disabled'); }
+          }
+          el.classList.add('on');
+          const desc = document.getElementById(statusDescId);
+          if (desc) desc.textContent = '开 · 1 围栏';
+          const body = document.getElementById(bodyId);
+          if (body) { body.classList.add('visible'); body.classList.remove('disabled'); }
+          showToast('安全区域已开启，宝宝跟随已关闭');
+        }}
+      ]);
+      return;
+    }
+  }
+  el.classList.toggle('on');
+  const isOn = el.classList.contains('on');
+  const desc = document.getElementById(statusDescId);
+  const body = document.getElementById(bodyId);
+  if (desc) desc.textContent = isOn ? '开 · 1 围栏' : '关';
+  if (body) { body.classList.toggle('visible', isOn); body.classList.toggle('disabled', !isOn); }
+}
 function toggleAIDetection(el, statusDescId, bodyId) {
   el.classList.toggle('on');
   const isOn = el.classList.contains('on');
@@ -5410,9 +6312,9 @@ function wakeDevice() {
     if (sleepControls) {
       sleepControls.style.display = 'flex';
       sleepControls.innerHTML = `
-        <div class="preview-ctrl-btn" title="声音"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+        <div class="preview-ctrl-btn" onclick="event.stopPropagation()" title="声音"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
         <div class="preview-ctrl-btn" id="sleepPlayPause" onclick="event.stopPropagation();toggleCardPlayPause('sleep')"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></div>
-        <div class="preview-ctrl-btn" title="全屏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>`;
+        <div class="preview-ctrl-btn" onclick="event.stopPropagation();enterLandscapeDetail()" title="全屏"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></div>`;
     }
     if (sleepBattery) sleepBattery.style.display = 'flex';
     const topBar = document.getElementById('sleepTopBar');
@@ -6047,10 +6949,6 @@ function selectTrack(el) {
   if (nowPlaying) nowPlaying.textContent = name;
 }
 
-function selectTimeFormat(el) {
-  el.parentElement.querySelectorAll('.sensitivity-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-}
 
 // Custom recording
 let recInterval = null;
@@ -6187,7 +7085,7 @@ function simulateNewEvent() {
   setTimeout(() => {
     const list = document.getElementById('eventList');
     if (!list) return;
-    const types = ['哭声检测','移动侦测','声音检测','宝宝在位','围栏告警','温湿度异常','遮脸检测'];
+    const types = ['哭声检测','移动侦测','声音检测','宝宝跟随','围栏告警','温湿度异常','遮脸检测'];
     const descs = ['检测到宝宝哭声','画面检测到移动','环境声音超过阈值','宝宝离开画面','宝宝走出围栏范围','温度超出设定范围','检测到面部遮挡'];
     const idx = Math.floor(Math.random() * types.length);
     const now = new Date();
@@ -6260,6 +7158,7 @@ window.addEventListener('DOMContentLoaded', () => {
   resetDetailControlsAutoHide();
   bindVideoTapGesture(document.querySelector('#sdPlaybackView .playback-player'), togglePlaybackControls);
   bindVideoTapGesture(document.querySelector('#cloudPlaybackView .playback-player'), togglePlaybackControls);
+  updateDocPanel('home');
 });
 
 function updatePowerSaveThreshold(value) {
@@ -6279,14 +7178,12 @@ function updateCrySensitivity() {
 
 // ========== SOUND SENSITIVITY ==========
 function updateSoundSensitivity() {
-  const dbLevels = ['', '≥80dB', '≥65dB', '≥50dB'];
-  const displayLevels = ['', '低 (≥80dB)', '中 (≥65dB)', '高 (≥50dB)'];
+  const labels = ['', '低灵敏度', '中灵敏度', '高灵敏度'];
   const val = document.getElementById('soundSensitivity').value;
   const descEl = document.getElementById('soundSensitivityDesc');
-  if (descEl && val) descEl.textContent = '当前：' + displayLevels[val];
-  // Update AI guard page desc
+  if (descEl && val) descEl.textContent = '当前：' + labels[val];
   const guardDesc = document.getElementById('soundStatusDesc');
-  if (guardDesc && val) guardDesc.textContent = '开 · ' + dbLevels[val];
+  if (guardDesc && val) guardDesc.textContent = '开 · ' + labels[val];
 }
 </script>
 
