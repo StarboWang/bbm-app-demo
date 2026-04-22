@@ -3816,6 +3816,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="sidebar-sub-item" onclick="go('power-save-settings', this)"><span class="dot"></span><span>电池管理</span></div>
       <div class="sidebar-sub-item" onclick="go('pip-settings', this)"><span class="dot"></span><span>画中画播放</span></div>
       <div class="sidebar-sub-item" onclick="go('camera-volume', this)"><span class="dot"></span><span>摄像机音量</span></div>
+      <div class="sidebar-sub-item" onclick="go('feature-settings', this)"><span class="dot"></span><span>指示灯开关</span></div>
             <div class="sidebar-sub-item" onclick="go('cloud-storage', this)"><span class="dot"></span><span>云存储</span></div>
     </div>
 
@@ -5143,20 +5144,25 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item-content"><div class="settings-item-label">画面设置</div><div class="settings-item-desc">翻转、夜视模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="switchPage('pip-settings')">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="11" y="9" width="10" height="7" rx="1"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">画中画播放</div><div class="settings-item-desc">退出 App 后继续播放</div></div>
-            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-          </div>
-          <div class="settings-item" onclick="switchPage('camera-volume')">
-            <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
-            <div class="settings-item-content"><div class="settings-item-label">摄像机音量</div><div class="settings-item-desc">设备端扬声器音量</div></div>
-            <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon" style="background:var(--accent-sage-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-sage)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="11" y="9" width="10" height="7" rx="1"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">画中画播放</div><div class="settings-item-desc">退出 App 后自动以画中画继续播放</div></div>
+            <div class="toggle-switch"></div>
           </div>
                     <div class="settings-item" onclick="showPTZCalibrationModal()">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">云台校准</div><div class="settings-item-desc">摄像机旋转一周并回到初始位置</div></div>
           </div>
+          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+            <div class="settings-item-icon" style="background:var(--accent-amber-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
+            <div class="settings-item-content"><div class="settings-item-label">指示灯</div><div class="settings-item-desc">设备状态指示灯</div></div>
+            <div class="toggle-switch on"></div>
+          </div>
+        </div>
+        <div class="detection-card" style="margin-top:8px">
+          <div class="detection-card-title">摄像机音量</div>
+          <div class="range-row"><span style="font-size:16px">🔈</span><input type="range" class="range-input" min="0" max="100" step="10" value="50" aria-label="摄像机音量" oninput="this.nextElementSibling.textContent=this.value+'%'"><div class="range-value" style="min-width:44px">50%</div></div>
+          <div class="detection-card-desc" style="margin-top:8px">设备端扬声器音量，影响对讲和安抚音乐的声音输出</div>
         </div>
       </div>
 
@@ -5884,6 +5890,7 @@ const prdContentMap = {
       '<strong>画中画播放</strong>：自动画中画开关；开启后直播退出 App 自动以系统 PiP 播放，调用系统级画中画能力。',
       '<strong>摄像机音量</strong>：滑动条调节摄像头端扬声器音量，0%-100%，步长 10%，共 11 档；影响对讲/音乐播放等设备端输出。',
       '<strong>云台校准</strong>：点击校准 + 二次确认弹窗；标题"确认校准云台吗？"正文"云台校准将修复摄像机在长期转动中造成的云台角度少量偏移的问题。确认后，摄像机将旋转一周进行云台校准，并自动回到默认初始位置。"；手动触发，用于长期转动后的偏移修复。',
+      '<strong>指示灯开关</strong>：控制设备状态指示灯的显示与隐藏；默认开启；关闭后设备运行/离线/告警等状态指示灯不再亮起。',
       '<strong>省电模式（BM05不支持）</strong>：手动省电/自动开启/自动关闭 + 开关 + 低电量阈值；阈值 10%-90%，步长 10%，默认 50%（具体以设备测试为准）；未插电或低电量自动开启，插电或电量恢复后按规则关闭；与电池展示、休眠策略联动。'
     ],
     crossRules: []
