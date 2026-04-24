@@ -2312,7 +2312,108 @@ input[type="range"].range-input::-webkit-slider-thumb {
 .event-desc { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .event-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
 .event-time { font-size: 11px; color: var(--text-tertiary); }
+.event-card.no-video .event-thumb-inner { background: linear-gradient(135deg, #3a3835, #2e2d2b); }
+.event-card.no-video .event-thumb { border: 1px dashed var(--border); }
 
+/* Event bottom sheet preview */
+.event-sheet-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 185;
+  display: none;
+}
+.event-sheet-backdrop.visible { display: block; }
+.event-bottom-sheet {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--bg-card);
+  border-radius: 16px 16px 0 0;
+  z-index: 188;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 70%;
+  overflow-y: auto;
+}
+.event-bottom-sheet.visible { transform: translateY(0); }
+.event-sheet-handle {
+  display: flex; justify-content: center; padding: 8px 0 4px;
+}
+.event-sheet-handle::after {
+  content: ''; width: 36px; height: 4px; border-radius: 2px; background: rgba(0,0,0,0.15);
+}
+.event-sheet-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-tertiary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-secondary);
+}
+.event-sheet-image {
+  width: 100%; aspect-ratio: 16/9;
+  background: #1a1a1a;
+  display: flex; align-items: center; justify-content: center;
+}
+.event-sheet-image svg { width: 48px; height: 48px; opacity: 0.3; }
+.event-sheet-info { padding: 16px; }
+.event-sheet-info .event-type { font-size: 15px; font-weight: 600; }
+.event-sheet-info .event-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+.event-sheet-info .event-time { font-size: 12px; color: var(--text-tertiary); margin-top: 8px; }
+
+/* Offline disabled */
+.disabled-offline {
+  opacity: 0.35 !important;
+  pointer-events: none !important;
+  filter: grayscale(1);
+}
+.offline-playback-mask {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; z-index: 10;
+  color: rgba(255,255,255,0.7);
+  border-radius: 12px;
+}
+.offline-playback-mask.visible { display: flex; }
+.offline-playback-mask svg { width: 28px; height: 28px; opacity: 0.5; }
+.offline-playback-mask span { font-size: 13px; }
+
+/* Notification frequency */
+.freq-selector-bar {
+  display: flex; gap: 6px; padding: 8px 4px 4px;
+}
+.freq-option {
+  flex: 1; text-align: center;
+  padding: 7px 4px; border-radius: 8px;
+  font-size: 12px; font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.freq-option.active {
+  background: var(--accent-warm);
+  color: white;
+}
+.notification-hint {
+  font-size: 11px; color: var(--text-tertiary);
+  padding: 4px 4px 8px; line-height: 1.5;
+}
+
+/* SD format checkbox in modal */
+.modal-checkbox-row {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 14px; padding: 10px;
+  background: var(--bg-tertiary); border-radius: 8px;
+}
+.modal-checkbox-row input[type="checkbox"] {
+  margin-top: 2px; width: 18px; height: 18px;
+  accent-color: var(--accent-warm);
+  cursor: pointer; flex-shrink: 0;
+}
+.modal-checkbox-label { font-size: 13px; color: var(--text-primary); font-weight: 500; cursor: pointer; }
+.modal-checkbox-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; line-height: 1.4; }
 
 .detail-bottom-nav {
   position: fixed;
@@ -3937,6 +4038,23 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
     </div>
 
+    <!-- Event Bottom Sheet Preview (for no-video events) -->
+    <div class="event-sheet-backdrop" id="eventSheetBackdrop" onclick="closeEventBottomSheet()"></div>
+    <div class="event-bottom-sheet" id="eventBottomSheet">
+      <div class="event-sheet-handle"></div>
+      <div class="event-sheet-close" onclick="closeEventBottomSheet()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </div>
+      <div class="event-sheet-image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><path d="M2 16l5-5 4 4 4-4 7 7"/></svg>
+      </div>
+      <div class="event-sheet-info">
+        <div class="event-type" id="sheetEventType">遮脸检测</div>
+        <div class="event-desc" id="sheetEventDesc">检测到宝宝脸部被遮挡</div>
+        <div class="event-time" id="sheetEventTime">2026.4.10 18:05</div>
+      </div>
+    </div>
+
     <!-- ==================== PAGE 1: HOME ==================== -->
     <div class="page active" id="page-home">
       <div class="safe-top"></div>
@@ -4165,29 +4283,29 @@ input[type="range"].range-input::-webkit-slider-thumb {
               <svg class="sound-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
               <span id="detailSoundLabel">开启</span>
             </div>
-            <div class="live-video-control quality-control" onclick="event.stopPropagation();cycleDetailQuality()">
+            <div class="live-video-control quality-control" id="qualityControl" onclick="event.stopPropagation();cycleDetailQuality()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               <span id="detailQualityLabel">超清 2.5K</span>
             </div>
-            <div class="live-video-control" onclick="event.stopPropagation();enterLandscapeDetail()">
+            <div class="live-video-control" id="fullscreenBtn" onclick="event.stopPropagation();enterLandscapeDetail()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
               <span>全屏</span>
             </div>
           </div>
           <div class="live-quick-actions-overlay" id="quickActionsOverlay">
-            <div class="quick-action-item" onclick="event.stopPropagation();toggleDetailSleep()">
+            <div class="quick-action-item" id="quickSleepBtn" onclick="event.stopPropagation();toggleDetailSleep()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
               <span id="quickSleepToggleLabel">休眠</span>
             </div>
-            <div class="quick-action-item" onclick="event.stopPropagation();toggleDetailSound()">
+            <div class="quick-action-item" id="quickSoundBtn" onclick="event.stopPropagation();toggleDetailSound()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
               <span id="quickDetailSoundLabel">开启</span>
             </div>
-            <div class="quick-action-item" onclick="event.stopPropagation();cycleDetailQuality()">
+            <div class="quick-action-item" id="quickQualityBtn" onclick="event.stopPropagation();cycleDetailQuality()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
               <span id="quickDetailQualityLabel">超清 2.5K</span>
             </div>
-            <div class="quick-action-item" onclick="event.stopPropagation();enterLandscapeDetail()">
+            <div class="quick-action-item" id="quickFullscreenBtn" onclick="event.stopPropagation();enterLandscapeDetail()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
               <span>全屏</span>
             </div>
@@ -4261,7 +4379,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       </div>
 
       <div class="detail-scrollable">
-      <div class="soothe-music-wrapper">
+      <div class="soothe-music-wrapper" id="sootheMusicWrapper">
         <div class="soothe-music-row" onclick="toggleSootheDetail()">
           <div class="soothe-play-btn" id="soothePlayBtn" onclick="event.stopPropagation();toggleSoothePlay()">
             <svg class="soothe-icon-play" viewBox="0 0 24 24" fill="white"><polygon points="8 5 19 12 8 19 8 5"/></svg>
@@ -4308,12 +4426,13 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div id="eventList">
           <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">12s</div></div><div class="event-content"><div class="event-type">哭声检测</div><div class="event-desc">检测到宝宝哭声，持续约 12 秒</div><div class="event-meta"><div class="event-time">21:32</div></div></div></div>
           <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动物体</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
-          <div class="event-card" onclick="switchPage('playback')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
+          <div class="event-card no-video" onclick="openEventBottomSheet('声音检测', '环境声音超过阈值', '2026.4.10 19:47')"><div class="event-thumb"><div class="event-thumb-inner"></div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
+          <div class="event-card no-video" onclick="openEventBottomSheet('遮脸检测', '检测到宝宝脸部被遮挡', '2026.4.10 18:05')"><div class="event-thumb"><div class="event-thumb-inner"></div></div><div class="event-content"><div class="event-type">遮脸检测</div><div class="event-desc">检测到宝宝脸部被遮挡</div><div class="event-meta"><div class="event-time">18:05</div></div></div></div>
         </div>
       </div>
 
       <div class="detail-bottom-nav">
-        <div class="detail-bottom-nav-item" onclick="switchPage('playback')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>回放</span></div>
+        <div class="detail-bottom-nav-item" id="detailPlaybackNav" onclick="switchPage('playback')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>回放</span></div>
         <div class="detail-bottom-nav-item" onclick="switchPage('album')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/></svg><span>相册</span></div>
         <div class="detail-bottom-nav-item" onclick="switchPage('ai-guard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span>智能看护</span></div>
       </div>
@@ -4350,8 +4469,8 @@ input[type="range"].range-input::-webkit-slider-thumb {
             </div>
             <div class="playback-timestamp"><div class="live-brand-logo"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><text x="12" y="17" font-size="16" font-weight="700" text-anchor="middle" fill="white">M</text></svg></div><div class="live-rec-dot"></div><span>2026.4.10 18:30:00</span></div>
             <div class="playback-player-actions">
-              <div class="playback-player-action" onclick="event.stopPropagation();showToast('已保存到相册')" title="下载"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-              <div class="playback-player-action" onclick="event.stopPropagation();showToast('已调起分享')" title="分享"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+              <div class="playback-player-action" onclick="event.stopPropagation();pausePlayback();showToast('已保存到相册')" title="下载"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+              <div class="playback-player-action" onclick="event.stopPropagation();pausePlayback();showToast('已调起分享')" title="分享"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
               <div class="playback-player-action danger" onclick="event.stopPropagation();showDeleteFragmentModal('sd')" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
             </div>
             <div class="playback-controls">
@@ -4388,6 +4507,12 @@ input[type="range"].range-input::-webkit-slider-thumb {
               <span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span>
             </div>
           </div>
+
+          <!-- Offline mask for SD playback video area -->
+          <div class="offline-playback-mask" id="playbackOfflineMask">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            <span>设备离线，无法回放</span>
+          </div>
         </div>
       </div>
 
@@ -4398,8 +4523,8 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="playback-player-scene"><div class="crib-scene"><div class="crib-visual"><div class="crib-pillow"></div><div class="crib-baby"></div></div></div></div>
             <div class="playback-timestamp"><div class="live-brand-logo"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><text x="12" y="17" font-size="16" font-weight="700" text-anchor="middle" fill="white">M</text></svg></div><div class="live-rec-dot"></div><span>2026.4.10 15:20:00</span></div>
             <div class="playback-player-actions">
-              <div class="playback-player-action" onclick="event.stopPropagation();showToast('已保存到相册')" title="下载"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-              <div class="playback-player-action" onclick="event.stopPropagation();showToast('已调起分享')" title="分享"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+              <div class="playback-player-action" onclick="event.stopPropagation();pausePlayback();showToast('已保存到相册')" title="下载"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+              <div class="playback-player-action" onclick="event.stopPropagation();pausePlayback();showToast('已调起分享')" title="分享"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
               <div class="playback-player-action danger" onclick="event.stopPropagation();showDeleteFragmentModal('cloud')" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
             </div>
           </div>
@@ -4446,7 +4571,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
         <div class="playback-event-card" onclick="showToast('已定位到 20:15')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">2m18s</div></div><div class="event-content"><div class="event-type">移动侦测</div><div class="event-desc">画面检测到移动</div><div class="event-meta"><div class="event-time">20:15</div></div></div></div>
         <div class="playback-event-card" onclick="showToast('已定位到 19:47')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">8s</div></div><div class="event-content"><div class="event-type">声音检测</div><div class="event-desc">环境声音超过阈值</div><div class="event-meta"><div class="event-time">19:47</div></div></div></div>
         <div class="playback-event-card" onclick="showToast('已定位到 18:00')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">15s</div></div><div class="event-content"><div class="event-type">宝宝跟随</div><div class="event-desc">宝宝离开画面</div><div class="event-meta"><div class="event-time">18:00</div></div></div></div>
-        <div class="playback-event-card" onclick="showToast('已定位到 17:30')"><div class="event-thumb"><div class="event-thumb-inner"></div><div class="event-thumb-dur">6s</div></div><div class="event-content"><div class="event-type">围栏告警</div><div class="event-desc">宝宝走出围栏范围</div><div class="event-meta"><div class="event-time">17:30</div></div></div></div>
+        <div class="playback-event-card" onclick="openEventBottomSheet('围栏告警', '宝宝走出围栏范围', '2026.4.10 17:30')"><div class="event-thumb"><div class="event-thumb-inner"></div></div><div class="event-content"><div class="event-type">围栏告警</div><div class="event-desc">宝宝走出围栏范围</div><div class="event-meta"><div class="event-time">17:30</div></div></div></div>
       </div>
     </div>
 
@@ -4557,15 +4682,15 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="settings-item-content"><div class="settings-item-label">云存储</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="switchPage('firmware-update')">
+          <div class="settings-item" id="firmwareItem" onclick="switchPage('firmware-update')">
             <div class="settings-item-content"><div class="settings-item-label">固件升级</div><div class="settings-item-desc">当前版本 V2.1.0</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="showToast('共享设备功能')">
+          <div class="settings-item" id="shareItem" onclick="showToast('共享设备功能')">
             <div class="settings-item-content"><div class="settings-item-label">共享设备</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="showRebootDeviceModal()">
+          <div class="settings-item" id="rebootItem" onclick="showRebootDeviceModal()">
             <div class="settings-item-content"><div class="settings-item-label">重启设备</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
@@ -5139,27 +5264,27 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="settings-group">
         <div class="settings-group-title">摄像与画面</div>
         <div class="settings-list">
-          <div class="settings-item" onclick="switchPage('display-settings')">
+          <div class="settings-item" id="displaySettingsItem" onclick="switchPage('display-settings')">
             <div class="settings-item-icon" style="background:var(--accent-sage-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-sage)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">画面设置</div><div class="settings-item-desc">翻转、夜视模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+          <div class="settings-item" id="pipSettingsItem" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
             <div class="settings-item-icon" style="background:var(--accent-sage-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-sage)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><rect x="11" y="9" width="10" height="7" rx="1"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">画中画播放</div><div class="settings-item-desc">退出 App 后自动以画中画继续播放</div></div>
             <div class="toggle-switch"></div>
           </div>
-                    <div class="settings-item" onclick="showPTZCalibrationModal()">
+          <div class="settings-item" id="ptzCalibrationItem" onclick="showPTZCalibrationModal()">
             <div class="settings-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">云台校准</div><div class="settings-item-desc">摄像机旋转一周并回到初始位置</div></div>
           </div>
-          <div class="settings-item" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
+          <div class="settings-item" id="indicatorLightItem" onclick="toggleSwitch(this.querySelector('.toggle-switch'))">
             <div class="settings-item-icon" style="background:var(--accent-amber-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">指示灯</div><div class="settings-item-desc">设备状态指示灯</div></div>
             <div class="toggle-switch on"></div>
           </div>
         </div>
-        <div class="detection-card" style="margin-top:8px">
+        <div class="detection-card" style="margin-top:8px" id="cameraVolumeCard">
           <div class="detection-card-title">摄像机音量</div>
           <div class="range-row"><span style="font-size:16px">🔈</span><input type="range" class="range-input" min="0" max="100" step="10" value="50" aria-label="摄像机音量" oninput="this.nextElementSibling.textContent=this.value+'%'"><div class="range-value" style="min-width:44px">50%</div></div>
           <div class="detection-card-desc" style="margin-top:8px">设备端扬声器音量，影响对讲和安抚音乐的声音输出</div>
@@ -5169,7 +5294,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="settings-group">
         <div class="settings-group-title">存储</div>
         <div class="settings-list">
-          <div class="settings-item" onclick="switchPage('storage-settings')">
+          <div class="settings-item" id="storageSettingsItem" onclick="switchPage('storage-settings')">
             <div class="settings-item-icon" style="background:var(--accent-amber-light)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><line x1="2" y1="11" x2="22" y2="11"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">存储设置</div><div class="settings-item-desc">SD 卡状态与录制模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -5180,7 +5305,7 @@ input[type="range"].range-input::-webkit-slider-thumb {
       <div class="settings-group">
         <div class="settings-group-title">电源</div>
         <div class="settings-list">
-          <div class="settings-item" onclick="switchPage('power-save-settings')">
+          <div class="settings-item" id="batterySettingsItem" onclick="switchPage('power-save-settings')">
             <div class="settings-item-icon battery-warm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-warm)" stroke-width="2"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></div>
             <div class="settings-item-content"><div class="settings-item-label">电池管理</div><div class="settings-item-desc">查看电量并管理省电模式</div></div>
             <svg class="settings-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
@@ -5354,6 +5479,26 @@ input[type="range"].range-input::-webkit-slider-thumb {
             <div class="toggle-switch on"></div>
           </div>
         </div>
+      </div>
+
+      <div class="notification-section">
+        <div class="settings-group-title">通知频率</div>
+        <div class="settings-list">
+          <div class="settings-item">
+            <div class="settings-item-content">
+              <div class="settings-item-label">通知推送频率</div>
+              <div class="settings-item-desc">控制 AI 告警通知的推送频率，避免短时间内重复推送</div>
+            </div>
+          </div>
+          <div class="freq-selector-bar">
+            <div class="freq-option active" data-value="realtime" onclick="setNotificationFreq('realtime')">实时</div>
+            <div class="freq-option" data-value="5m" onclick="setNotificationFreq('5m')">5分钟</div>
+            <div class="freq-option" data-value="15m" onclick="setNotificationFreq('15m')">15分钟</div>
+            <div class="freq-option" data-value="30m" onclick="setNotificationFreq('30m')">30分钟</div>
+            <div class="freq-option" data-value="1h" onclick="setNotificationFreq('1h')">1小时</div>
+          </div>
+        </div>
+        <div class="notification-hint">哭声检测等关键告警始终实时推送，不受频率限制</div>
       </div>
 
       <div class="notification-section">
@@ -5611,7 +5756,7 @@ const prdContentMap = {
       '<strong>电池信息（BM05不支持）</strong>：充电中 → 充电图标 + 电量百分比；未充电 → 电池图标 + 电量百分比；省电模式开启中 → 省电样式 + "省电"标签；连续充电 24 小时后 → 不再显示电池图标。'
     ],
     crossRules: [
-      '<strong>离线仍可进入详情页</strong>：设备离线时仍可进入详情页，但直播相关操作不可用。',
+      '<strong>离线仍可进入详情页</strong>：设备离线时仍可进入详情页，直播相关操作按钮全部置灰不可点击，回放入口仍可用（SD 卡回放不可用，云回放可用），相册/智能看护/设置仍可访问。详情页底部事件列表可查看历史，但点击事件默认预览图片。详见直播页离线状态规则。',
       '<strong>BM05不支持电池</strong>：BM05 不支持电池电量展示和低电量设置相关功能。',
       '<strong>休眠需特殊处理</strong>：在线休眠的设备不能当成正常在线设备处理，必须显示"设备休眠中"并提供唤醒入口。'
     ]
@@ -5642,7 +5787,7 @@ const prdContentMap = {
       ],
       [
         '<strong>智能看护事件列表</strong>：底部展示最近告警事件。',
-        '<strong>事件列表</strong>：默认展示最近 3 条告警事件，支持上下滑动查看最近 24 小时更多事件；事件字段包括告警缩略图/截图、视频时长、告警时间、告警类型、告警说明；点击"查看全部"进入回放事件视图。',
+        '<strong>事件列表</strong>：默认展示最近 3 条告警事件，支持上下滑动查看最近 24 小时更多事件；事件字段包括告警缩略图/截图、视频时长（无录像时不显示）、告警时间、告警类型、告警说明；无录像事件额外显示"仅截图"标签；点击有录像事件跳转回放定位，点击无录像事件全屏查看截图；点击"查看全部"进入回放事件视图。',
         '<strong>空状态：未开启</strong>：插图 + "还未开启任何看护功能"，提供"去开启"跳转设置页 AI 告警分组。',
         '<strong>空状态：已开启无事件</strong>：插图 + "暂无告警事件"。'
       ],
@@ -5653,7 +5798,15 @@ const prdContentMap = {
       '<strong>操作栏自动隐藏</strong>：画面操作栏 3 秒未操作后自动隐藏，点击画面可重新显示。',
       '<strong>电量 24 小时规则</strong>：连续 24 小时插电后不展示电源图标。',
       '<mermaid>flowchart TD\n  A[告警事件触发] --> B{用户所在场景}\n  B -->|设备详情页| C[底部事件列表\\n动态插入\\n不弹横幅]\n  B -->|App内其他页| D[顶部滑入告警横幅\\n3秒后自动消失\\n点击跳转详情页]\n  B -->|App后台/未打开| E{免打扰时段?}\n  E -->|是| F[仅记录事件\\n不发通知]\n  E -->|否| G[推送系统通知]\n  style C fill:#E8F0E9\n  style D fill:#E8F0E9\n  style G fill:#E8F0E9\n  style F fill:#FBF5E4</mermaid>',
-      '<strong>设备离线异常</strong>：视频画面区域展示离线时间，回放/相册/智能看护仍可访问，但直播相关操作按钮置灰不可点击。',
+      [
+        '<strong>设备离线状态</strong>：设备离线时各功能按钮可用性明确如下。',
+        '<strong>详情页不可用（置灰）</strong>：直播画面、声音开关、画质切换、全屏、语音对讲、抓拍、录像、云台控制、安抚音乐、休眠/唤醒、快捷操作栏（休眠/声音/画质/全屏）。',
+        '<strong>详情页可用</strong>：相册入口、智能看护事件列表（查看历史）、设置入口。',
+        '<strong>回放页</strong>：底部导航"回放"按钮仍可用。SD 卡回放不可用（视频区域显示半透明离线遮罩 + "设备离线，无法回放"）；云回放可用（正常查看云端录像）。',
+        '<strong>事件列表离线行为</strong>：离线时点击事件卡片默认打开底部图片预览（不跳转 SD 卡回放）；点击"查看全部"跳转云存储页。',
+        '<strong>设置页中不可用</strong>：功能设置全部（人脸放大/夜视/旋转等）、固件升级、共享设备、重启设备。',
+        '<strong>设置页中可用</strong>：设备信息、云服务、删除设备。'
+      ],
       '<strong>SD 卡异常</strong>：详情页弹出"存储卡异常"弹窗；用户可查看或忽略；"查看"跳转存储设置页；同一异常每 30 天最多弹出一次。'
     ]
   },
@@ -5670,20 +5823,24 @@ const prdContentMap = {
       '<strong>录像</strong>：录制当前回放内容，再次点击停止；保存到系统相册和 App 内置相册，不写入 SD 卡。',
       '<strong>下载</strong>：保存当前片段到系统相册，完成后 Toast "已保存到相册"。',
       '<strong>分享</strong>：导出后调起系统原生分享功能。',
-      '<strong>删除</strong>：弹出确认弹窗；SD 卡回放标题"删除 SD 卡录像"正文"确认删除该段 SD 卡录像吗？删除后将从设备存储卡中移除，且无法恢复。"；云回放标题"删除云端录像"正文"确认删除该段云端录像吗？删除后将从云端存储中移除，且无法恢复。"。',
+      '<strong>删除</strong>：弹出确认弹窗；SD 卡回放标题"删除 SD 卡录像"，正文"确认删除该段 SD 卡录像吗？时间段：{开始时间} - {结束时间}。删除后将从设备存储卡中移除，且无法恢复。"；云回放标题"删除云端录像"，正文"确认删除该段云端录像吗？时间段：{开始时间} - {结束时间}。删除后将从云端存储中移除，且无法恢复。"；时间格式跟随当前设备端时间制式（12h/24h），精确到分钟；删除视频后将同步删除关联的智能看护事件记录。',
       [
         '<strong>时间轴与事件</strong>：回放页底部的时间定位和事件检索区域。',
         '<strong>时间轴</strong>：横向可缩放，最大跨度 24 小时；有录像时间段用深灰蓝色块标识；无录像时视频区域显示"暂无录像"；可拖动游标定位；双指张开放大/双指捏合缩小；时间刻度固定 24 小时制 00:00-24:00。',
         '<strong>日期选择器</strong>：默认显示当前已选日期；有事件日期下方显示圆点；切换后刷新录像和事件。',
         '<strong>事件类型筛选</strong>：支持全部事件、哭声、移动侦测、声音检测、宝宝跟随、围栏/禁区、温湿度。',
-        '<strong>事件列表</strong>：显示事件总数；每条包含缩略图、视频时长、告警类型、事件描述、发生时间。',
-        '<strong>点击事件</strong>：直接在时间轴上定位到事件时间点。'
+        '<strong>事件列表</strong>：显示事件总数；每条包含缩略图、视频时长（无录像时不显示）、告警类型、事件描述、发生时间；当事件无关联录像时（如 SD 卡未插入、存储异常等），仅显示预览缩略图，不显示视频时长，卡片右上角显示"仅截图"标签。',
+        '<strong>无视频事件交互</strong>：当事件无关联录像时，点击该事件不跳转回放，而是全屏查看该事件的预览截图，支持滑动查看前后事件截图，底部操作仅有分享和删除。',
+        '<strong>点击事件</strong>：有录像事件直接在时间轴上定位到事件时间点；无录像事件全屏查看截图。'
       ]
     ],
     crossRules: [
       '<strong>时间轴不受时间制式影响</strong>：回放时间轴固定使用 24 小时制，不跟随设备端时间制式。',
       '<strong>事件标记颜色</strong>：哭声检测红色、移动侦测黄色、声音检测橙色、宝宝跟随蓝色、围栏/禁区紫色、温湿度异常绿色。',
-      '<strong>无录像状态</strong>：时间轴无色块时，视频区域显示"暂无录像"。'
+      '<strong>无录像状态</strong>：时间轴无色块时，视频区域显示"暂无录像"。',
+      '<strong>视频与事件联动删除</strong>：删除录像视频时，同步删除与该录像关联的智能看护事件记录。事件记录支持单独删除，仅移除事件列表中的条目，不影响对应的录像文件；单独删除事件时弹出确认弹窗，标题"删除事件"，正文"确认删除该事件记录吗？删除后仅移除事件列表中的条目，不影响录像文件。"。',
+      '<strong>操作时自动暂停回放</strong>：用户点击删除、分享、下载按钮时，自动暂停当前回放播放；操作完成（确认删除、分享完成、下载完成）或用户取消后，不自动恢复播放，需用户手动点击播放按钮继续。',
+      '<strong>事件保留策略</strong>：所有事件记录统一在云端保留 30 天，超过 30 天后自动删除不可恢复。SD 卡录像保留策略独立于事件记录，由 SD 卡容量和循环覆盖策略决定（写满后循环覆盖最早录像）。事件记录与 SD 卡录像各自独立管理，事件超期删除不影响 SD 卡录像，SD 卡录像被覆盖也不影响事件记录。'
     ]
   },
   album: {
@@ -5728,7 +5885,13 @@ const prdContentMap = {
       '<strong>固件升级</strong>：点击进入升级流程，当前调用涂鸦 SDK OTA 页面；后续原子化上线后切换到原子化 OTA 页面。',
       '<strong>共享设备</strong>：点击进入共享流程页面，调用通用的共享设备页面功能。',
       '<strong>重启设备</strong>：点击后弹出确认弹窗；正文"确认重启该设备吗？重启期间设备将短暂离线，直播画面中断，约 30 秒后自动恢复。"；确认后提示"设备重启中，请稍候..."。',
-      '<strong>删除设备</strong>：点击后弹出二次确认弹窗；正文"确认删除该设备吗？删除后，该设备将从当前账号下移除，需重新绑定后才可继续使用。"；确认后执行删除并返回设备列表页。'
+      [
+        '<strong>删除设备</strong>：点击后弹出二次确认弹窗，根据设备归属呈现不同文案。',
+        '<strong>自己绑定的设备（所有者）</strong>：正文"确认删除该设备吗？删除后，该设备将从当前账号下移除，需重新绑定后才可继续使用。"；确认后执行删除并返回设备列表页。',
+        '<strong>他人共享的设备（被共享者）</strong>：正文"确认移除该共享设备吗？移除后，该设备将从您的设备列表中移除，不影响共享者的正常使用和共享关系。"；确认后仅从自己的设备列表移除。',
+        '<strong>自己共享给别人的设备</strong>：删除时同时取消所有共享关系，弹窗额外提示"您已将此设备共享给 X 位用户，删除后他们将无法访问该设备。"；删除后自动通知被共享者"设备 xxx 已被所有者移除"。',
+        '<strong>存储卡处理</strong>：删除设备弹窗底部增加"同时格式化存储卡"勾选项（默认不勾选）。勾选后提示"格式化存储卡将清除卡内所有录像和事件数据，且无法恢复。"；确认后先执行 SD 卡格式化再执行设备删除。不勾选时仅删除设备，SD 卡数据保留在卡中（重新绑定后可查看）。'
+      ]
     ],
     crossRules: [
       '<strong>权限申请</strong>：麦克风权限在点击语音对讲时触发，拒绝后引导"开启麦克风以对讲"；相册权限在点击截屏/录像/下载时触发，拒绝后引导"开启相册访问权限，保存素材到本地"；通知权限不首次弹申请，智能看护页顶部常驻引导。'
@@ -5780,7 +5943,9 @@ const prdContentMap = {
     crossRules: [
       '<strong>检测关闭时</strong>：不发送提醒，也不记录事件。',
       '<strong>权限引导</strong>：智能看护页顶部常驻"强烈建议开启通知权限"并提供【去设置】。',
-      '<strong>与围栏/禁区互斥</strong>：开启宝宝跟随后，已设置的安全围栏和禁区将自动失效，需强弹窗提醒用户；关闭宝宝跟随后，围栏和禁区恢复可用。'
+      '<strong>与围栏/禁区互斥</strong>：开启宝宝跟随后，已设置的安全围栏和禁区将自动失效，需强弹窗提醒用户；关闭宝宝跟随后，围栏和禁区恢复可用。',
+      '<strong>通知频率冷却</strong>：同类 AI 告警在全局冷却时间内不重复推送系统通知（默认 5 分钟，可在通知管理中配置），事件列表仍逐条记录。冷却时间从上次同类推送时间起算。哭声检测等关键告警始终实时推送不受限制；设备离线通知和低电量提醒也不受频率限制。',
+      '<strong>事件保留时间</strong>：所有事件记录统一在云端保留 30 天，超过后自动删除。SD 卡录像由 SD 卡容量和循环覆盖策略决定，与事件记录独立管理。'
     ]
   },
   'motion-settings': {
@@ -5905,11 +6070,13 @@ const prdContentMap = {
         '<strong>异常状态</strong>：显示"存储卡异常，建议格式化后重新使用"，提供格式化入口（二次确认后执行格式化）。',
         '<strong>未插入</strong>：显示"未检测到存储卡"，不显示容量信息，不提供格式化入口。'
       ],
-      '<strong>事件录制</strong>：仅在已开启的 AI 检测算法触发事件时录像；固定包含触发前 5 秒画面（预录制）和事件结束后继续录制 10 秒（延后录制），两项不可关闭。',
+      '<strong>事件录制</strong>：仅在已开启的 AI 检测算法触发事件时录像；固定包含触发前 5 秒画面（预录制）和事件结束后继续录制 10 秒（延后录制），两项不可关闭。当多个事件触发时间重叠或相邻（间隔 < 30 秒）时，合并录制为一段长视频，避免产生大量短时录像片段；每个合并录像对应多个关联事件记录，录像文件独立存储在 SD 卡中。',
       '<strong>始终录制</strong>：24 小时持续录制，所有内容保存到存储卡；存储卡写满后循环覆盖最早录像。',
       '<strong>录像模式互斥</strong>：事件录制和始终录制为二选一关系。'
     ],
-    crossRules: []
+    crossRules: [
+      '<strong>多事件合并录制</strong>：多事件触发时采用合并录制方案，时间重叠或相邻（间隔 < 30 秒）的事件合并为一段录像。一段合并录像可关联多个事件记录。极端情况下短时间内大量事件可能产生较长录像，总数量受 SD 卡容量和循环覆盖策略约束。'
+    ]
   },
   'display-settings': {
     title: '画面设置',
@@ -5952,7 +6119,8 @@ const prdContentMap = {
         '<strong>设备类通知</strong>：设备离线、低电量提醒各有独立推送开关。',
         '<strong>前置依赖</strong>：只有对应检测功能已开启时，通知项才允许开启。',
         '<strong>快捷入口</strong>：每个检测子页面底部也有对应的通知推送开关，操作与通知管理页联动同步。'
-      ]
+      ],
+      '<strong>通知频率</strong>：全局控制 AI 告警通知的推送频率，避免短时间内重复推送。选项：实时（立即推送每次告警）、5 分钟汇总、15 分钟汇总、30 分钟汇总、1 小时汇总，默认实时。汇总模式下周期内同类告警合并为一条通知，事件列表仍逐条记录。哭声检测等关键告警不受频率限制，始终实时推送。'
     ],
     crossRules: [
       '<strong>低电量提醒 BM05不支持</strong>：BM05 不支持低电量提醒通知开关。'
@@ -6004,7 +6172,8 @@ const prdContentMap = {
     title: '云存储',
     positioning: '从通用设置进入云存储服务页面，当前二级页面内容由涂鸦提供，App 只负责入口承接。',
     configItems: [
-      '<strong>页面说明</strong>：二级页面由涂鸦提供，App 不干预页面内容。'
+      '<strong>页面说明</strong>：二级页面由涂鸦提供，App 不干预页面内容。',
+      '<strong>云存储套餐</strong>：云存储套餐决定录像的云端保留时长（具体以涂鸦提供为准）。事件记录统一保留 30 天，不受云存储套餐影响。'
     ],
     crossRules: []
   },
@@ -6755,12 +6924,13 @@ function selectDate(el) {
 
 function showDeleteFragmentModal(source) {
   const title = source === 'sd' ? '删除 SD 卡录像' : '删除云端录像';
+  const timeRange = '14:23 - 14:35';
   const body = source === 'sd'
-    ? '确认删除该段 SD 卡录像吗？删除后将从设备存储卡中移除，且无法恢复。'
-    : '确认删除该段云端录像吗？删除后将从云端存储中移除，且无法恢复。';
-  showModal(title, '<p>' + body + '</p>', [
+    ? '确认删除该段 SD 卡录像吗？时间段：' + timeRange + '。删除后将从设备存储卡中移除，且无法恢复。'
+    : '确认删除该段云端录像吗？时间段：' + timeRange + '。删除后将从云端存储中移除，且无法恢复。';
+  showModal(title, '<p>' + body + '</p><p style="font-size:12px;color:var(--text-tertiary);margin-top:8px">删除视频后将同步删除关联的智能看护事件记录。</p>', [
     { label: '取消', class: 'modal-btn-secondary' },
-    { label: '确认删除', class: 'modal-btn-danger', action: () => showToast('已删除') }
+    { label: '确认删除', class: 'modal-btn-danger', action: () => { pausePlayback(); showToast('已删除'); } }
   ]);
 }
 
@@ -6863,6 +7033,37 @@ function openFsPreview(name, time) {
 }
 function closeFsPreview() {
   document.getElementById('fullscreenPreview').classList.remove('visible');
+}
+
+// ========== EVENT BOTTOM SHEET ==========
+function openEventBottomSheet(type, desc, time) {
+  document.getElementById('sheetEventType').textContent = type;
+  document.getElementById('sheetEventDesc').textContent = desc;
+  document.getElementById('sheetEventTime').textContent = time;
+  document.getElementById('eventSheetBackdrop').classList.add('visible');
+  document.getElementById('eventBottomSheet').classList.add('visible');
+}
+function closeEventBottomSheet() {
+  document.getElementById('eventSheetBackdrop').classList.remove('visible');
+  document.getElementById('eventBottomSheet').classList.remove('visible');
+}
+
+// ========== PLAYBACK PAUSE ==========
+let playbackPaused = false;
+function pausePlayback() {
+  playbackPaused = true;
+  pbPlaying = false;
+  const icon = document.getElementById('pbPlayIcon') || document.getElementById('pbPlayIconCloud');
+  if (icon) {
+    icon.innerHTML = '<polygon points="8 5 19 12 8 19 8 5"/>';
+  }
+}
+
+// ========== NOTIFICATION FREQUENCY ==========
+function setNotificationFreq(value) {
+  document.querySelectorAll('.freq-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.value === value);
+  });
 }
 
 // ========== SETTINGS ==========
@@ -7021,9 +7222,18 @@ function showFormatSDModal() {
 }
 
 function showDeleteDeviceModal() {
-  showModal('删除设备', '<p>确认删除该设备吗？删除后，该设备将从当前账号下移除，需重新绑定后才可继续使用。</p>', [
+  const bodyHTML = '<p style="font-size:14px;color:var(--text-secondary);line-height:1.6">' +
+    '确认删除该设备吗？删除后，该设备将从当前账号下移除，需重新绑定后才可继续使用。</p>' +
+    '<p style="font-size:12px;color:var(--text-tertiary);margin-top:6px;line-height:1.5">' +
+    '如为他人共享的设备，移除后仅从您的设备列表中移除，不影响共享者的正常使用。</p>' +
+    '<div class="modal-checkbox-row">' +
+    '<input type="checkbox" id="formatSDCheck">' +
+    '<div><label class="modal-checkbox-label" for="formatSDCheck">同时格式化存储卡</label>' +
+    '<div class="modal-checkbox-hint">格式化存储卡将清除卡内所有录像和事件数据，且无法恢复。</div></div>' +
+    '</div>';
+  showModal('删除设备', bodyHTML, [
     { label: '取消', class: 'modal-btn-secondary' },
-    { label: '确认删除', class: 'modal-btn-danger', action: () => { showToast('设备已删除'); switchPage('home'); } }
+    { label: '确认删除', class: 'modal-btn-danger', action: () => { const formatSD = document.getElementById('formatSDCheck')?.checked; if (formatSD) { showToast('存储卡格式化中...'); } setTimeout(() => { showToast('设备已删除'); switchPage('home'); }, formatSD ? 1200 : 0); } }
   ]);
 }
 
@@ -7135,6 +7345,54 @@ function toggleDeviceOffline() {
   const overlay = document.getElementById('detailOfflineOverlay');
   if (video) video.classList.toggle('offline', deviceIsOffline);
   if (overlay) overlay.classList.toggle('visible', deviceIsOffline);
+
+  // Detail page buttons
+  const offlineElements = [
+    'captureBtn', 'recordBtn', 'talkBtn', 'ptzToggleBtn', 'moreToggleBtn',
+    'detailSleepControl', 'detailSoundControl', 'qualityControl', 'fullscreenBtn',
+    'faceZoomOption', 'nightVisionOption', 'sootheMusicWrapper',
+    'quickSleepBtn', 'quickSoundBtn', 'quickQualityBtn', 'quickFullscreenBtn',
+    // Settings page - function settings all disabled
+    'displaySettingsItem', 'pipSettingsItem', 'ptzCalibrationItem', 'indicatorLightItem', 'cameraVolumeCard',
+    'storageSettingsItem', 'batterySettingsItem',
+    'firmwareItem', 'shareItem', 'rebootItem'
+  ];
+  offlineElements.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('disabled-offline', deviceIsOffline);
+  });
+
+  // Playback offline mask
+  const playbackMask = document.getElementById('playbackOfflineMask');
+  if (playbackMask) playbackMask.classList.toggle('visible', deviceIsOffline);
+
+  // Event list click behavior: offline → preview image only
+  const eventCards = document.querySelectorAll('#eventList .event-card, .playback-event-card');
+  eventCards.forEach(card => {
+    if (deviceIsOffline) {
+      card.dataset._origOnclick = card.getAttribute('onclick') || '';
+      const type = card.querySelector('.event-type')?.textContent || '事件';
+      const desc = card.querySelector('.event-desc')?.textContent || '';
+      const time = card.querySelector('.event-time')?.textContent || '';
+      card.setAttribute('onclick', "openEventBottomSheet('" + type + "', '" + desc + "', '" + time + "')");
+    } else if (card.dataset._origOnclick) {
+      card.setAttribute('onclick', card.dataset._origOnclick);
+      delete card.dataset._origOnclick;
+    }
+  });
+
+  // "查看全部" offline → cloud storage
+  const viewAll = document.querySelector('.events-view-all');
+  if (viewAll) {
+    if (deviceIsOffline) {
+      viewAll.dataset._origOnclick = viewAll.getAttribute('onclick') || '';
+      viewAll.setAttribute('onclick', "switchPage('cloud-storage')");
+    } else if (viewAll.dataset._origOnclick) {
+      viewAll.setAttribute('onclick', viewAll.dataset._origOnclick);
+      delete viewAll.dataset._origOnclick;
+    }
+  }
+
   showToast(deviceIsOffline ? '设备已切换为离线状态' : '设备已恢复在线');
 }
 
